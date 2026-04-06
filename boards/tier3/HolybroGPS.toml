@@ -1,0 +1,104 @@
+# HolybroGPS — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F412Rx, 16MHz crystal, 400MHz clock
+
+[board]
+name = "HolybroGPS"
+board_id = 0
+mcu = "STM32F412Rx"
+clock_hz = 400000000
+oscillator_hz = 16000000
+flash_size_kb = 512
+ram_size_kb = 0
+
+[serial]
+order = ["USART2", "USART1"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 2
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "B5"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "bmi088_a"
+bus = 1
+cs = "A8"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B6"
+sda = "B7"
+af = 4
+speed_khz = 400
+internal = true
+
+[[i2c_bus]]
+index = 2
+logical_index = 1
+scl = "B10"
+sda = "B3"
+af = 4
+speed_khz = 400
+internal = true
+
+[[uart]]
+serial_index = 0
+peripheral = "USART2"
+uart_index = 2
+tx = "A2"
+rx = "A3"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART1"
+uart_index = 1
+tx = "A9"
+rx = "A10"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[imu_probe]]
+driver = "Bmi088"
+bus_type = "Spi"
+spi_device = "bmi055_a"  # WARNING: device not in SPIDEV table
+rotation = "Roll180Yaw90"
+
+[[baro_probe]]
+driver = "Bmp388"
+bus_type = "I2c"
+bus_index = 0
+address = 0x77
+
+[[compass_probe]]
+driver = "Bmm150"
+bus_type = "I2c"
+bus_index = 0
+address = 0x10
+rotation = "Yaw90"
+external = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "B15"
+

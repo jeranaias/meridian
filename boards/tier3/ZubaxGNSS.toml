@@ -1,0 +1,101 @@
+# ZUBAXGNSS — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F105xC, 16MHz crystal, 400MHz clock
+
+[board]
+name = "ZUBAXGNSS"
+board_id = 0
+mcu = "STM32F105xC"
+clock_hz = 400000000
+oscillator_hz = 16000000
+flash_size_kb = 256
+ram_size_kb = 0
+
+[serial]
+order = ["USART3", "EMPTY", "EMPTY", "USART2"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = false
+
+[[spi_bus]]
+index = 3
+sck = "C10"
+miso = "C11"
+mosi = "C12"
+af = 6
+dma_noshare = false
+
+[[spi_device]]
+name = "ms5611"
+bus = 3
+cs = "A15"
+mode = 3
+low_speed_hz = 8000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "lis3mdl"
+bus = 3
+cs = "D2"
+mode = 3
+low_speed_hz = 500000
+high_speed_hz = 500000
+
+[[uart]]
+serial_index = 0
+peripheral = "USART3"
+uart_index = 3
+tx = "B10"
+rx = "B11"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "USART2"
+uart_index = 2
+tx = "A2"
+rx = "A3"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[baro_probe]]
+driver = "Ms5611"
+bus_type = "Spi"
+bus_index = 3
+spi_device = "ms5611"
+
+[[compass_probe]]
+driver = "Lis3mdl"
+bus_type = "Spi"
+bus_index = 0
+address = 0x00
+rotation = "Yaw270"
+external = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "B3"
+

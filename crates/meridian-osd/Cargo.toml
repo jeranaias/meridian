@@ -1,0 +1,15 @@
+[package]
+name = "meridian-osd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "On-screen display — MAX7456 analog + MSP DisplayPort digital backends"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-hal = { workspace = true }
+heapless = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-hal/std"]

@@ -1,0 +1,317 @@
+/* ============================================================
+   fleet.css — Fleet registry panel (T3-7)
+   ============================================================ */
+
+/* ---- Toolbar Button ---- */
+
+#btn-fleet {
+    font-size: 14px;
+}
+#btn-fleet.active {
+    color: var(--c-primary);
+}
+
+/* ---- Fleet Panel (slide-in from right above toolbar-right) ---- */
+
+#panel-fleet {
+    position: fixed;
+    top: var(--toolbar-h, 44px);
+    right: 0;
+    width: 320px;
+    max-height: calc(100vh - var(--toolbar-h, 44px));
+    background: var(--c-bg-raised);
+    border-left: 1px solid var(--c-border);
+    border-bottom: 1px solid var(--c-border);
+    display: flex;
+    flex-direction: column;
+    z-index: 500;
+    box-shadow: -4px 4px 24px rgba(0,0,0,0.5);
+    animation: fleetSlideIn 0.15s ease-out;
+}
+
+@keyframes fleetSlideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+}
+
+.fleet-panel-header {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--c-border);
+    flex-shrink: 0;
+    gap: 8px;
+}
+
+.fleet-panel-title {
+    font-family: var(--f-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-text);
+    flex: 1;
+    letter-spacing: 0.05em;
+}
+
+.fleet-close {
+    background: transparent;
+    border: none;
+    color: var(--c-neutral);
+    cursor: pointer;
+    font-size: 16px;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: var(--r-sm);
+}
+.fleet-close:hover { color: var(--c-text); background: rgba(255,255,255,0.06); }
+
+.fleet-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* ---- Add button ---- */
+
+.fleet-add-btn {
+    width: 100%;
+    padding: 8px 12px;
+    min-height: 36px;
+    background: transparent;
+    border: 1px dashed var(--c-primary);
+    border-radius: var(--r-sm);
+    color: var(--c-primary);
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.06em;
+    transition: background 0.15s;
+}
+.fleet-add-btn:hover { background: rgba(0,229,255,0.07); }
+
+/* ---- Vehicle Row ---- */
+
+.fleet-row {
+    background: var(--c-bg-input);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-sm);
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+}
+.fleet-row:hover {
+    border-color: var(--c-primary);
+    background: rgba(0,229,255,0.04);
+}
+
+.fleet-row-main {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+.fleet-row-name {
+    font-family: var(--f-display);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--c-text);
+}
+.fleet-row-tail {
+    font-family: var(--f-mono);
+    font-size: 10px;
+    color: var(--c-neutral);
+}
+.fleet-row-stats {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    color: var(--c-neutral);
+}
+
+.fleet-empty {
+    color: var(--c-neutral);
+    font-size: 11px;
+    text-align: center;
+    padding: 24px 12px;
+    line-height: 1.6;
+}
+
+/* ---- Detail Card ---- */
+
+.fleet-detail-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.fleet-back-btn {
+    background: transparent;
+    border: none;
+    color: var(--c-primary);
+    cursor: pointer;
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 0 0 8px 0;
+    text-align: left;
+}
+.fleet-back-btn:hover { opacity: 0.8; }
+
+.fleet-detail-name {
+    font-family: var(--f-display);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: 8px;
+}
+
+.fleet-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--c-border);
+    font-size: 11px;
+    color: var(--c-neutral);
+}
+.fleet-detail-row strong {
+    font-family: var(--f-mono);
+    color: var(--c-text);
+    font-weight: 500;
+}
+
+.fleet-detail-notes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+    font-size: 11px;
+    color: var(--c-neutral);
+}
+.fleet-detail-notes p {
+    color: var(--c-text);
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.fleet-detail-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.fleet-edit-btn {
+    flex: 1;
+    padding: 7px;
+    background: var(--c-primary);
+    color: #000;
+    border: none;
+    border-radius: var(--r-sm);
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+.fleet-edit-btn:hover { opacity: 0.85; }
+
+.fleet-del-btn {
+    padding: 7px 14px;
+    background: transparent;
+    border: 1px solid var(--c-emergency);
+    color: var(--c-emergency);
+    border-radius: var(--r-sm);
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.fleet-del-btn:hover { background: rgba(255,60,60,0.1); }
+
+/* ---- Edit Form ---- */
+
+.fleet-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.fleet-edit-title {
+    font-family: var(--f-display);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: 4px;
+}
+
+.fleet-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.fleet-field label {
+    font-size: 10px;
+    color: var(--c-neutral);
+    font-family: var(--f-display);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+.fleet-field input,
+.fleet-field textarea {
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-sm);
+    color: var(--c-text);
+    font-family: var(--f-mono);
+    font-size: 11px;
+    padding: 5px 7px;
+    outline: none;
+    resize: vertical;
+}
+.fleet-field input:focus,
+.fleet-field textarea:focus {
+    border-color: var(--c-primary);
+}
+.fleet-field input[readonly] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.fleet-edit-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.fleet-save-btn {
+    flex: 1;
+    padding: 8px;
+    background: var(--c-primary);
+    color: #000;
+    border: none;
+    border-radius: var(--r-sm);
+    font-family: var(--f-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+.fleet-save-btn:hover { opacity: 0.85; }
+
+.fleet-cancel-btn {
+    padding: 8px 14px;
+    background: transparent;
+    border: 1px solid var(--c-border);
+    color: var(--c-neutral);
+    border-radius: var(--r-sm);
+    font-family: var(--f-display);
+    font-size: 11px;
+    cursor: pointer;
+}
+.fleet-cancel-btn:hover { color: var(--c-text); border-color: var(--c-text); }

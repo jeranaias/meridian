@@ -1,0 +1,201 @@
+# UAV-DEV-FC-UM982-H7 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32H743, 24MHz crystal, 400MHz clock
+
+[board]
+name = "UAV-DEV-FC-UM982-H7"
+board_id = 0
+mcu = "STM32H743"
+clock_hz = 400000000
+oscillator_hz = 24000000
+flash_size_kb = 2048
+ram_size_kb = 1024
+
+[serial]
+order = ["OTG1", "USART1", "UART8", "USART2", "USART6", "UART7", "USART3", "OTG2"]
+
+[features]
+sdcard = true
+iomcu = false
+ethernet = true
+can = true
+can_bus_count = 2
+
+[[spi_bus]]
+index = 4
+sck = "E12"
+miso = "E13"
+mosi = "E14"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "icm45686"
+bus = 4
+cs = "E15"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 24000000
+
+[[spi_device]]
+name = "dps310"
+bus = 4
+cs = "D3"
+mode = 3
+low_speed_hz = 5000000
+high_speed_hz = 5000000
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B8"
+sda = "B9"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART1"
+uart_index = 1
+tx = "B14"
+rx = "B15"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "UART8"
+uart_index = 8
+tx = "E1"
+rx = "E0"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "D6"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 4
+peripheral = "USART6"
+uart_index = 6
+tx = "C6"
+rx = "C7"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 5
+peripheral = "UART7"
+uart_index = 7
+tx = "B4"
+rx = "B3"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 6
+peripheral = "USART3"
+uart_index = 3
+rx = "D9"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 7
+peripheral = "OTG2"
+is_usb = true
+default_baud = 115200
+default_protocol = 0  # None
+
+[[pwm_output]]
+pwm_num = 1
+timer = 4
+channel = 1
+pin = "D12"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 4
+channel = 2
+pin = "D13"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 4
+channel = 3
+pin = "D14"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 4
+channel = 4
+pin = "D15"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 3
+channel = 3
+pin = "B0"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 3
+channel = 4
+pin = "B1"
+af = 2
+complementary = false
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 4
+spi_device = "icm45686"
+rotation = "None"
+
+[[baro_probe]]
+driver = "Dps310"
+bus_type = "Spi"
+bus_index = 4
+spi_device = "dps310"
+
+[[compass_probe]]
+driver = "Bmm150"
+bus_type = "I2c"
+bus_index = 0
+address = 0x10
+rotation = "Roll180"
+external = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "E9"
+

@@ -1,0 +1,73 @@
+# FlywooF745 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32G474, 24MHz crystal, 170MHz clock
+
+[board]
+name = "FlywooF745"
+board_id = 0
+mcu = "STM32G474"
+clock_hz = 170000000
+oscillator_hz = 24000000
+flash_size_kb = 512
+ram_size_kb = 128
+
+[serial]
+order = ["USART1"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 3
+
+[[spi_bus]]
+index = 2
+sck = "B13"
+miso = "B14"
+mosi = "B15"
+af = 5
+dma_noshare = true
+
+[[spi_device]]
+name = "adxl327"
+bus = 2
+cs = "B12"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 8000000
+
+[[uart]]
+serial_index = 0
+peripheral = "USART1"
+uart_index = 1
+tx = "A9"
+rx = "A10"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[pwm_output]]
+pwm_num = 1
+timer = 1
+channel = 1
+pin = "A8"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 2
+channel = 1
+pin = "A15"
+af = 1
+complementary = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "B10"
+

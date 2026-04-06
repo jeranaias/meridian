@@ -1,0 +1,21 @@
+[package]
+name = "meridian-platform-stm32"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Platform implementation for STM32H7 via RTIC"
+
+[dependencies]
+meridian-hal = { workspace = true }
+meridian-types = { workspace = true }
+meridian-sync = { workspace = true }
+meridian-boardcfg = { workspace = true }
+heapless = { workspace = true }
+
+# Hardware deps only for ARM targets
+[target.'cfg(target_arch = "arm")'.dependencies]
+cortex-m = "0.7"
+cortex-m-rt = "0.7"
+stm32h7xx-hal = { version = "0.16", features = ["stm32h743v", "rt"] }
+defmt = "0.3"
+defmt-rtt = "0.4"

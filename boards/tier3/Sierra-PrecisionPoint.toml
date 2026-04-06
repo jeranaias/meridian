@@ -1,0 +1,127 @@
+# Sierra-PrecisionPoint — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F412Rx, 16MHz crystal, 400MHz clock
+
+[board]
+name = "Sierra-PrecisionPoint"
+board_id = 0
+mcu = "STM32F412Rx"
+clock_hz = 400000000
+oscillator_hz = 16000000
+flash_size_kb = 512
+ram_size_kb = 0
+
+[usb]
+manufacturer = "Sierra Aerospace"
+product = "Sierra-PrecisionPoint"
+
+[serial]
+order = ["OTG1", "USART1", "USART2"]
+
+[features]
+sdcard = true
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 1
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 2
+sck = "B10"
+miso = "C2"
+mosi = "C3"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "icm42688"
+bus = 1
+cs = "C4"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "dps310"
+bus = 2
+cs = "C1"
+mode = 3
+low_speed_hz = 5000000
+high_speed_hz = 5000000
+
+[[spi_device]]
+name = "rm3100"
+bus = 2
+cs = "C0"
+mode = 0
+low_speed_hz = 1000000
+high_speed_hz = 1000000
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART1"
+uart_index = 1
+tx = "B6"
+rx = "B7"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "USART2"
+uart_index = 2
+tx = "A2"
+rx = "A3"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[pwm_output]]
+pwm_num = 1
+timer = 2
+channel = 1
+pin = "A15"
+af = 1
+complementary = false
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "icm42688"
+rotation = "Yaw90"
+
+[[baro_probe]]
+driver = "Dps310"
+bus_type = "Spi"
+bus_index = 2
+spi_device = "dps310"
+
+[[compass_probe]]
+driver = "Rm3100"
+bus_type = "Spi"
+bus_index = 0
+address = 0x00
+rotation = "Yaw180"
+external = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+

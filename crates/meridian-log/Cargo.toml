@@ -1,0 +1,16 @@
+[package]
+name = "meridian-log"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Structured binary logging with replay capability"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-bus = { workspace = true }
+heapless = { workspace = true }
+postcard = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-bus/std", "postcard/use-std"]

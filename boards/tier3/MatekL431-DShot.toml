@@ -1,0 +1,146 @@
+# MatekL431 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32L431, 8MHz crystal, 80MHz clock
+
+[board]
+name = "MatekL431"
+board_id = 0
+mcu = "STM32L431"
+clock_hz = 80000000
+oscillator_hz = 8000000
+flash_size_kb = 256
+ram_size_kb = 64
+
+[serial]
+order = ["USART1", "EMPTY", "USART3"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 1
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "B4"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[i2c_bus]]
+index = 2
+logical_index = 0
+scl = "B13"
+sda = "B14"
+af = 4
+speed_khz = 400
+internal = true
+
+[[uart]]
+serial_index = 0
+peripheral = "USART1"
+uart_index = 1
+tx = "B6"
+rx = "B7"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "USART3"
+uart_index = 3
+tx = "B10"
+rx = "B11"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[pwm_output]]
+pwm_num = 1
+timer = 1
+channel = 1
+pin = "A8"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 1
+channel = 2
+pin = "A9"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 1
+channel = 3
+pin = "A10"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 1
+channel = 4
+pin = "A11"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 2
+channel = 1
+pin = "A15"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 2
+channel = 3
+pin = "A2"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 2
+channel = 4
+pin = "A3"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 2
+channel = 2
+pin = "A1"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 9
+timer = 16
+channel = 1
+pin = "A6"
+af = 1
+complementary = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "B3"
+

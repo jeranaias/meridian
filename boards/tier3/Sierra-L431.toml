@@ -1,0 +1,74 @@
+# SierraL431 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32L431, 16MHz crystal, 80MHz clock
+
+[board]
+name = "SierraL431"
+board_id = 0
+mcu = "STM32L431"
+clock_hz = 80000000
+oscillator_hz = 16000000
+flash_size_kb = 256
+ram_size_kb = 64
+
+[serial]
+order = ["USART1"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 1
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "rm3100"
+bus = 1
+cs = "B12"
+mode = 0
+low_speed_hz = 1000000
+high_speed_hz = 1000000
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B6"
+sda = "B7"
+af = 4
+speed_khz = 400
+internal = true
+
+[[uart]]
+serial_index = 0
+peripheral = "USART1"
+uart_index = 1
+tx = "A9"
+rx = "A10"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[compass_probe]]
+driver = "Rm3100"
+bus_type = "Spi"
+bus_index = 0
+address = 0x00
+rotation = "None"
+external = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "A15"
+

@@ -1,0 +1,312 @@
+# MRO_PIXRACER_PRO — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32H743, 24MHz crystal, 400MHz clock
+
+[board]
+name = "MRO_PIXRACER_PRO"
+board_id = 0
+mcu = "STM32H743"
+clock_hz = 400000000
+oscillator_hz = 24000000
+flash_size_kb = 2048
+ram_size_kb = 1024
+
+[usb]
+manufacturer = "mRo"
+
+[serial]
+order = ["OTG1", "USART2", "USART3", "UART4", "UART8", "USART1", "UART7", "OTG2"]
+
+[features]
+sdcard = true
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 2
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = true
+
+[[spi_bus]]
+index = 2
+sck = "B10"
+miso = "B14"
+mosi = "B15"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 5
+sck = "F7"
+miso = "F8"
+mosi = "F9"
+af = 5
+dma_noshare = true
+
+[[spi_bus]]
+index = 6
+sck = "G13"
+miso = "G12"
+mosi = "G14"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "icm20948"
+bus = 1
+cs = "E15"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 4000000
+
+[[spi_device]]
+name = "icm20608"
+bus = 1
+cs = "C2"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "dps310"
+bus = 2
+cs = "D7"
+mode = 3
+low_speed_hz = 5000000
+high_speed_hz = 5000000
+
+[[spi_device]]
+name = "ramtron"
+bus = 2
+cs = "D10"
+mode = 3
+low_speed_hz = 8000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "bmi088_g"
+bus = 5
+cs = "F10"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[spi_device]]
+name = "bmi088_a"
+bus = 5
+cs = "F6"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B8"
+sda = "B9"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "D6"
+cts = "D3"
+rts = "D4"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "USART3"
+uart_index = 3
+tx = "D8"
+rx = "D9"
+cts = "D11"
+rts = "D12"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "UART4"
+uart_index = 4
+tx = "A0"
+rx = "A1"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 4
+peripheral = "UART8"
+uart_index = 8
+tx = "E1"
+rx = "E0"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 5
+peripheral = "USART1"
+uart_index = 1
+tx = "B6"
+rx = "B7"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 6
+peripheral = "UART7"
+uart_index = 7
+tx = "E8"
+rx = "E7"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 7
+peripheral = "OTG2"
+is_usb = true
+default_baud = 115200
+default_protocol = 0  # None
+
+[[pwm_output]]
+pwm_num = 1
+timer = 1
+channel = 4
+pin = "E14"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 1
+timer = 1
+channel = 4
+pin = "E14"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 1
+channel = 3
+pin = "E13"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 1
+channel = 2
+pin = "E11"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 1
+channel = 1
+pin = "E9"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 1
+channel = 1
+pin = "E9"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 4
+channel = 2
+pin = "D13"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 4
+channel = 3
+pin = "D14"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 8
+channel = 1
+pin = "I5"
+af = 3
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 8
+channel = 2
+pin = "I6"
+af = 3
+complementary = false
+
+[[imu_probe]]
+driver = "Bmi088"
+bus_type = "Spi"
+bus_index = 5
+spi_device = "bmi088_a"
+rotation = "None"
+
+[[imu_probe]]
+driver = "Invensense"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "icm20608"
+rotation = "Roll180Yaw90"
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "icm20948"
+rotation = "Roll180Yaw90"
+
+[[baro_probe]]
+driver = "Dps310"
+bus_type = "Spi"
+bus_index = 2
+spi_device = "dps310"
+
+[[compass_probe]]
+driver = "Ak8963"
+bus_type = "I2c"
+bus_index = 0
+address = 0x00
+rotation = "Roll180"
+external = true
+
+[adc]
+voltage_pin = 14
+current_pin = 15
+voltage_scale = 10.1
+current_scale = 17.0
+
+[misc]
+led_pin = "B11"
+buzzer_pin = "A15"
+

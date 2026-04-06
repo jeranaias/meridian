@@ -1,0 +1,12 @@
+[package]
+name = "meridian-platform-sitl"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+meridian-hal = { workspace = true }
+meridian-types = { workspace = true }
+meridian-math = { workspace = true }
+meridian-sync = { workspace = true }
+heapless = { workspace = true }

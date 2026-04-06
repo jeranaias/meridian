@@ -1,0 +1,253 @@
+# VRBRAIN_V51 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F407, 8MHz crystal, 168MHz clock
+
+[board]
+name = "VRBRAIN_V51"
+board_id = 0
+mcu = "STM32F407"
+clock_hz = 168000000
+oscillator_hz = 8000000
+flash_size_kb = 1024
+ram_size_kb = 192
+
+[usb]
+manufacturer = "Laser Navigation"
+vid = "0x27AC"
+pid = "0x1151"
+
+[serial]
+order = ["OTG1", "USART3", "USART2", "USART1"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = false
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 2
+sck = "B13"
+miso = "B14"
+mosi = "B15"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 3
+sck = "C10"
+miso = "C11"
+mosi = "C12"
+af = 6
+dma_noshare = false
+
+[[spi_device]]
+name = "ms5611"
+bus = 1
+cs = "E0"
+mode = 3
+low_speed_hz = 20000000
+high_speed_hz = 20000000
+
+[[spi_device]]
+name = "mpu6000"
+bus = 2
+cs = "E10"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "ramtron"
+bus = 3
+cs = "E15"
+mode = 3
+low_speed_hz = 8000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "sdcard"
+bus = 3
+cs = "A4"
+mode = 0
+low_speed_hz = 400000
+high_speed_hz = 25000000
+
+[[i2c_bus]]
+index = 2
+logical_index = 0
+scl = "B10"
+sda = "B11"
+af = 4
+speed_khz = 400
+internal = false
+
+[[i2c_bus]]
+index = 1
+logical_index = 1
+scl = "B8"
+sda = "B9"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART3"
+uart_index = 3
+tx = "D8"
+rx = "D9"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "D6"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "USART1"
+uart_index = 1
+tx = "B6"
+rx = "B7"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[pwm_output]]
+pwm_num = 1
+timer = 2
+channel = 2
+pin = "A1"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 2
+channel = 3
+pin = "A2"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 2
+channel = 4
+pin = "A3"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 3
+channel = 2
+pin = "B5"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 3
+channel = 3
+pin = "B0"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 3
+channel = 4
+pin = "B1"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 4
+channel = 2
+pin = "D13"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 4
+channel = 1
+pin = "D12"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 9
+timer = 1
+channel = 1
+pin = "E9"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 10
+timer = 1
+channel = 2
+pin = "E11"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 11
+timer = 1
+channel = 3
+pin = "E13"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 12
+timer = 1
+channel = 4
+pin = "E14"
+af = 1
+complementary = false
+
+[[imu_probe]]
+driver = "Invensense"
+bus_type = "Spi"
+bus_index = 2
+spi_device = "mpu6000"
+rotation = "Yaw180"
+
+[[baro_probe]]
+driver = "Ms5611"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "ms5611"
+
+[adc]
+voltage_pin = 10
+current_pin = 11
+voltage_scale = 10.1
+current_scale = 17.0
+
+[misc]
+led_pin = "B3"
+

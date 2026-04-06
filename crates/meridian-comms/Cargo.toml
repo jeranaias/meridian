@@ -1,0 +1,18 @@
+[package]
+name = "meridian-comms"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Communication protocol — typed envelopes over pluggable transports"
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+meridian-bus = { workspace = true }
+heapless = { workspace = true, features = ["serde"] }
+postcard = { workspace = true }
+serde = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-bus/std", "postcard/use-std"]

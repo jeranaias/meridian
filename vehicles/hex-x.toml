@@ -1,0 +1,27 @@
+# Meridian Vehicle Definition — Hex-X
+
+[vehicle]
+name = "Hex-X"
+class = "multirotor"
+frame = "hex-x"
+
+[physics]
+mass_kg = 3.0
+inertia = [0.04, 0.04, 0.07]
+drag_coefficient = 0.15
+max_thrust_n = 60.0
+motor_count = 6
+
+[motors]
+protocol = "dshot600"
+spin_min = 0.15
+spin_max = 0.95
+
+[control.rate]
+roll  = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+pitch = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+yaw   = { kp = 0.180, ki = 0.018, kd = 0.0,    ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+
+[failsafe]
+rc_loss_timeout_ms = 500
+rc_loss_action = "rtl"

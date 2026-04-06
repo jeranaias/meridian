@@ -1,0 +1,68 @@
+# Meridian Vehicle Definition — Quad-X
+# All gains and thresholds traced to ArduPilot parameter defaults.
+
+[vehicle]
+name = "Quad-X"
+class = "multirotor"
+frame = "quad-x"
+
+[physics]
+mass_kg = 1.5
+inertia = [0.015, 0.015, 0.025]  # Ixx, Iyy, Izz (kg·m²)
+drag_coefficient = 0.1
+max_thrust_n = 30.0
+motor_count = 4
+
+[motors]
+protocol = "dshot600"
+direction = [1, 1, -1, -1]   # CW=1, CCW=-1 — ArduPilot motor order
+spin_min = 0.15               # MOT_SPIN_MIN
+spin_max = 0.95               # MOT_SPIN_MAX
+
+[control.rate]
+# ATC_RAT_RLL_*, ATC_RAT_PIT_*, ATC_RAT_YAW_* defaults
+roll  = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+pitch = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+yaw   = { kp = 0.180, ki = 0.018, kd = 0.0,    ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+
+[control.attitude]
+roll_p  = 4.5        # ATC_ANG_RLL_P
+pitch_p = 4.5        # ATC_ANG_PIT_P
+yaw_p   = 4.5        # ATC_ANG_YAW_P
+angle_max_deg = 30.0 # ANGLE_MAX / 100
+
+[control.position]
+pos_xy_p = 1.0       # PSC_POSXY_P
+vel_xy_p = 2.0       # PSC_VELXY_P
+vel_xy_i = 1.0       # PSC_VELXY_I
+vel_xy_d = 0.5       # PSC_VELXY_D
+pos_z_p  = 1.0       # PSC_POSZ_P
+vel_z_p  = 5.0       # PSC_VELZ_P
+
+[ekf]
+gps_delay_ms = 220
+
+[failsafe]
+rc_loss_timeout_ms = 500
+gps_loss_timeout_ms = 5000
+battery_low_voltage = 10.5
+battery_critical_voltage = 10.0
+battery_low_mah_remaining = 1000
+ekf_action = "land"
+rc_loss_action = "rtl"
+gps_loss_action = "land"
+
+[modes.default]
+flight_mode_1 = "stabilize"
+flight_mode_2 = "alt_hold"
+flight_mode_3 = "loiter"
+flight_mode_4 = "rtl"
+flight_mode_5 = "auto"
+flight_mode_6 = "guided"
+
+[fence]
+enabled = true
+type = ["altitude", "circle"]
+alt_max_m = 120.0
+radius_m = 300.0
+action = "rtl"

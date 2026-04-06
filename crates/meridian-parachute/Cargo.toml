@@ -1,0 +1,14 @@
+[package]
+name = "meridian-parachute"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Parachute deploy — motor shutdown, delay, servo/relay pulse sequence"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-hal = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-hal/std"]

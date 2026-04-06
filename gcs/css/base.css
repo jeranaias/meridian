@@ -1,0 +1,214 @@
+/* ============================================================
+   base.css — Meridian GCS — Light Mode
+   Clean, professional, high-contrast.
+   ============================================================ */
+
+:root {
+    /* === Light Theme === */
+    --c-bg:           #f0f2f5;
+    --c-bg-raised:    #ffffff;
+    --c-bg-panel:     #f8f9fb;
+    --c-bg-instr:     rgba(255, 255, 255, 0.88);
+    --c-bg-hud:       rgba(255, 255, 255, 0.85);
+    --c-bg-input:     #ebeef2;
+    --c-border:       #d0d5dd;
+    --c-border-focus: #a0aab8;
+    --c-groove:       rgba(0,0,0,0.06);
+
+    --c-emergency:    #dc2626;
+    --c-warning:      #ea580c;
+    --c-armed:        #e65100;
+    --c-safe:         #16a34a;
+    --c-primary:      #0891b2;
+    --c-info:         #2563eb;
+    --c-special:      #9333ea;
+    --c-neutral:      #64748b;
+    --c-neutral-dim:  #64748b;
+    --c-text:         #1e293b;
+    --c-text-dim:     #475569;
+
+    --c-sky:          #2563eb;
+    --c-ground:       #92400e;
+
+    --f-display:  'Rajdhani', sans-serif;
+    --f-body:     'Barlow', sans-serif;
+    --f-mono:     'DM Mono', 'Consolas', monospace;
+
+    --toolbar-h:    42px;
+    --actionbar-h:  58px;
+    --panel-w:      340px;
+    --r:            6px;
+    --r-sm:         4px;
+    --r-lg:         10px;
+
+    /* Type scale — nothing below 10px (van Schneider) */
+    --ts-xs:  10px;   /* labels, hints — floor */
+    --ts-sm:  12px;   /* secondary data, buttons */
+    --ts-md:  14px;   /* body, primary data */
+    --ts-lg:  17px;   /* instrument values */
+    --ts-xl:  20px;   /* headings */
+
+    --z-map:        1;
+    --z-hud:        1000;
+    --z-toolbar:    2000;
+    --z-actionbar:  2000;
+    --z-panel:      1500;
+    --z-context:    3000;
+    --z-modal:      10000;
+    --z-kill:       9999;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--c-bg);
+    color: var(--c-text);
+    font-family: var(--f-body);
+    font-size: 14px;
+    line-height: 1.4;
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+}
+
+/* Allow text selection in data-heavy panels */
+.panel-body,
+.status-grid,
+.param-table,
+.inspector-list,
+.scripting-output,
+.msg-log-bar,
+.bat-card {
+    user-select: text;
+    cursor: text;
+}
+
+#app {
+    display: grid;
+    grid-template-rows: var(--toolbar-h) 1fr var(--actionbar-h);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "toolbar"
+        "map"
+        "actions";
+    height: 100vh;
+    width: 100vw;
+}
+
+#toolbar    { grid-area: toolbar; }
+#map-area   { grid-area: map; position: relative; }
+#action-bar { grid-area: actions; }
+
+#panel-area {
+    position: fixed;
+    top: var(--toolbar-h);
+    right: 0;
+    bottom: var(--actionbar-h);
+    width: var(--panel-w);
+    z-index: var(--z-panel);
+    transform: translateX(100%);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--c-bg-raised);
+    border-left: 1px solid var(--c-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: none;
+}
+
+#panel-area.open {
+    transform: translateX(0);
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--c-border); border-radius: 2px; }
+
+/* ============================================================
+   Unified Panel Component Standards
+   All panel-body inputs, buttons, labels follow these rules.
+   ============================================================ */
+
+/* All inputs and selects inside panels: 36px min */
+.panel-body input[type="text"],
+.panel-body input[type="number"],
+.panel-body input[type="email"],
+.panel-body input[type="password"],
+.panel-body input[type="search"],
+.panel-body select,
+.panel-body textarea {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-family: var(--f-mono);
+    font-size: var(--ts-sm);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-sm);
+    background: var(--c-bg-input);
+    color: var(--c-text);
+    outline: none;
+    transition: border-color 0.12s;
+}
+
+.panel-body input:focus,
+.panel-body select:focus,
+.panel-body textarea:focus {
+    border-color: var(--c-primary);
+}
+
+/* All buttons inside panels: consistent sizing */
+.panel-body button {
+    font-family: var(--f-body);
+    font-size: var(--ts-sm);
+    font-weight: 600;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: all 0.12s;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes glow-emergency {
+    0%,100% { box-shadow: 0 0 8px rgba(220,38,38,0.3); }
+    50%     { box-shadow: 0 0 20px rgba(220,38,38,0.6); }
+}
+
+/* ============================================================
+   T2-19: Responsive breakpoints — tablet / portrait / phone
+   ============================================================ */
+
+/* ── 1024px — tablet landscape ── */
+@media (max-width: 1024px) {
+    :root {
+        --panel-w: 300px;
+    }
+
+    #app {
+        /* Keep grid layout; just shrink panel */
+    }
+}
+
+/* ── 768px — tablet portrait ── */
+@media (max-width: 768px) {
+    :root {
+        --panel-w: 100vw;   /* panels go full-width */
+        --toolbar-h: 44px;
+        --actionbar-h: 56px;
+    }
+
+    #panel-area {
+        width: 100vw;
+        right: 0;
+        left: 0;
+    }
+}
+
+/* ── 480px — phone portrait ── */
+@media (max-width: 480px) {
+    :root {
+        --panel-w: 100vw;
+        --toolbar-h: 40px;
+        --actionbar-h: 60px;
+    }
+}

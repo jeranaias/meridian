@@ -1,0 +1,17 @@
+[package]
+name = "meridian-can"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "DroneCAN (UAVCAN v0) protocol — frame encoding, node management, sensor integration"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-math = { workspace = true }
+meridian-hal = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-hal/std"]

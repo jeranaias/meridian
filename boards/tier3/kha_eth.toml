@@ -1,0 +1,70 @@
+# KHA_ETH — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32H743, 25MHz crystal, 400MHz clock
+
+[board]
+name = "KHA_ETH"
+board_id = 0
+mcu = "STM32H743"
+clock_hz = 400000000
+oscillator_hz = 25000000
+flash_size_kb = 2048
+ram_size_kb = 1024
+
+[usb]
+manufacturer = "ArduPilot"
+product = "%BOARD%"
+
+[serial]
+order = ["OTG1", "USART1", "USART2"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = true
+can = true
+can_bus_count = 1
+
+[[i2c_bus]]
+index = 4
+logical_index = 0
+scl = "D12"
+sda = "D13"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART1"
+uart_index = 1
+tx = "A9"
+rx = "A10"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "D6"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "E11"
+

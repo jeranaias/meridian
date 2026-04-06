@@ -1,0 +1,22 @@
+# Meridian Vehicle Definition — Octo-X
+
+[vehicle]
+name = "Octo-X"
+class = "multirotor"
+frame = "octo-x"
+
+[physics]
+mass_kg = 5.0
+inertia = [0.08, 0.08, 0.14]
+drag_coefficient = 0.2
+max_thrust_n = 100.0
+motor_count = 8
+
+[motors]
+protocol = "dshot600"
+spin_min = 0.15
+spin_max = 0.95
+
+[failsafe]
+rc_loss_timeout_ms = 500
+rc_loss_action = "rtl"

@@ -1,0 +1,15 @@
+[package]
+name = "meridian-notify"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "LED + buzzer notification — priority-based patterns and tunes"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-hal = { workspace = true }
+heapless = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-hal/std"]

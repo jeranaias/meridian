@@ -1,0 +1,16 @@
+[package]
+name = "meridian-terrain"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Terrain database — SRTM grid blocks with LRU cache and bilinear interpolation"
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std"]

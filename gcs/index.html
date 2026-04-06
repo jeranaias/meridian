@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <meta name="description" content="Meridian Ground Control Station — browser-based drone flight control">
+    <meta name="theme-color" content="#0a0e17" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='24' font-size='24'>✈</text></svg>">
+    <title>Meridian GCS</title>
+
+    <!-- Fonts: Rajdhani (display), DM Mono (data), Barlow (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Mono:wght@400;500&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Meridian CSS -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/toolbar.css">
+    <link rel="stylesheet" href="css/instruments.css">
+    <link rel="stylesheet" href="css/map.css">
+    <link rel="stylesheet" href="css/panels.css">
+    <link rel="stylesheet" href="css/actions.css">
+    <link rel="stylesheet" href="css/plan.css">
+    <link rel="stylesheet" href="css/logs.css">
+    <link rel="stylesheet" href="css/status.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/setup.css">
+    <link rel="stylesheet" href="css/params.css">
+    <link rel="stylesheet" href="css/survey.css">
+    <link rel="stylesheet" href="css/a11y.css">
+    <link rel="stylesheet" href="css/theme-dark.css">
+    <link rel="stylesheet" href="css/fleet.css">
+    <link rel="stylesheet" href="css/split-view.css">
+    <link rel="stylesheet" href="css/auto-analysis.css">
+</head>
+<body>
+    <a href="#map" class="skip-link">Skip to map</a>
+    <div id="app">
+
+        <!-- ═══════════════ TOOLBAR ═══════════════ -->
+        <header id="toolbar">
+            <h1 class="toolbar-brand" style="margin:0;font:inherit;cursor:pointer" onclick="Router.switchTo('fly')" title="Return to fly view">
+                <div class="brand-mark"></div>
+                <span class="brand-name">MERIDIAN</span>
+            </h1>
+
+            <div class="vehicle-selector" id="vehicle-selector" role="listbox" aria-label="Active vehicle"></div>
+
+            <nav class="toolbar-nav">
+                <button type="button" data-panel="fly" class="active" aria-label="Fly view (F)">Fly <span class="kbd">F</span></button>
+                <button type="button" data-panel="plan" aria-label="Plan view (P)">Plan <span class="kbd">P</span></button>
+                <button type="button" data-panel="setup" aria-label="Setup view (S)">Setup <span class="kbd">S</span></button>
+                <button type="button" data-panel="params" aria-label="Parameters view">Params</button>
+                <button type="button" data-panel="logs" aria-label="Logs view (L)">Logs <span class="kbd">L</span></button>
+                <button type="button" data-panel="status" aria-label="Status view (T)">Status <span class="kbd">T</span></button>
+            </nav>
+
+            <!-- Telemetry Strip — always visible, QGC-style -->
+            <div class="telem-strip" id="telem-strip" aria-live="polite">
+                <!-- Arm/Mode cluster -->
+                <div class="telem-group telem-state" id="telem-state">
+                    <span class="arm-dot"></span>
+                    <span class="telem-mode" id="telem-mode">DISARMED</span>
+                </div>
+                <div class="telem-sep"></div>
+                <!-- GPS -->
+                <div class="telem-group" id="telem-gps" title="GPS status">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="6" r="4"/><circle cx="6" cy="6" r="1" fill="currentColor"/><line x1="6" y1="0" x2="6" y2="2.5"/><line x1="6" y1="9.5" x2="6" y2="12"/><line x1="0" y1="6" x2="2.5" y2="6"/><line x1="9.5" y1="6" x2="12" y2="6"/></svg>
+                    <span class="telem-val" id="tv-gps">No Fix</span>
+                </div>
+                <!-- Battery -->
+                <div class="telem-group" id="telem-batt" title="Battery">
+                    <svg width="14" height="9" viewBox="0 0 14 9" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="0.5" y="0.5" width="11" height="8" rx="1.5"/><line x1="12" y1="2.5" x2="13.5" y2="2.5"/><line x1="12" y1="6.5" x2="13.5" y2="6.5"/></svg>
+                    <span class="telem-val" id="tv-batt">--</span>
+                </div>
+                <!-- RC -->
+                <div class="telem-group" id="telem-rc" title="RC signal">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M2 8 L6 2 L10 8"/><line x1="4" y1="5.5" x2="8" y2="5.5"/></svg>
+                    <span class="telem-val" id="tv-rc">--%</span>
+                </div>
+                <!-- EKF -->
+                <div class="telem-group telem-secondary" id="telem-ekf" title="EKF health">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="1" width="10" height="10" rx="2"/><line x1="3" y1="6" x2="5" y2="4"/><line x1="5" y1="4" x2="7" y2="8"/><line x1="7" y1="8" x2="9" y2="5"/></svg>
+                    <span class="telem-val" id="tv-ekf">--</span>
+                </div>
+                <!-- Flight time -->
+                <div class="telem-group" id="telem-time" title="Flight time">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="6" cy="6" r="5"/><line x1="6" y1="3" x2="6" y2="6"/><line x1="6" y1="6" x2="8" y2="7.5"/></svg>
+                    <span class="telem-val" id="tv-time">--:--</span>
+                </div>
+            </div>
+
+            <div class="toolbar-right">
+                <div id="pool-status" title="Multi-vehicle connection pool"></div>
+                <div class="rec-indicator" id="rec-indicator" role="status">
+                    <span class="rec-dot" aria-hidden="true"></span>
+                    <span>REC</span>
+                    <span class="rec-time">0:00</span>
+                </div>
+                <div class="conn-indicator disconnected" title="Click to connect" role="status">
+                    <span class="conn-dot"></span>
+                    <span class="conn-text">DISCONNECTED</span>
+                </div>
+                <button type="button" id="theme-toggle" class="toolbar-settings" title="Toggle light/dark" aria-label="Toggle light or dark theme" onclick="Theme.toggle()">&#x263E;</button>
+                <button type="button" class="toolbar-settings" title="Settings (Ctrl+,)" aria-label="Open settings panel" onclick="Router.switchTo('settings')">&#x2699;</button>
+            </div>
+        </header>
+
+        <!-- ═══════════════ MAP (always visible) ═══════════════ -->
+        <main id="map-area">
+            <div id="map"></div>
+
+            <!-- Failsafe alert banner -->
+            <div class="alert-banner" id="alert-banner" aria-live="assertive"></div>
+
+            <!-- HUD: instruments float over the map -->
+            <div class="hud" id="hud">
+                <!-- ADI: center-bottom -->
+                <div class="adi-container" role="img" aria-label="Attitude indicator">
+                    <canvas id="adi-canvas" aria-hidden="true"></canvas>
+                </div>
+
+                <!-- Compass: above ADI -->
+                <div class="compass-container" role="img" aria-label="Compass heading">
+                    <canvas id="compass-canvas" aria-hidden="true"></canvas>
+                </div>
+
+                <!-- Speed tape: left of ADI -->
+                <div class="tape-speed" role="img" aria-label="Airspeed indicator">
+                    <span class="tape-label">SPD</span>
+                    <canvas id="spd-canvas" aria-hidden="true"></canvas>
+                </div>
+
+                <!-- Alt tape: right of ADI -->
+                <div class="tape-alt" role="img" aria-label="Altitude indicator">
+                    <span class="tape-label">ALT</span>
+                    <canvas id="alt-canvas" aria-hidden="true"></canvas>
+                </div>
+
+                <!-- Telemetry strip: top-right -->
+                <div class="telemetry-strip">
+                    <div class="battery-widget" id="battery-widget" role="status" aria-label="Battery status"></div>
+                    <div class="health-grid" id="health-grid" role="status" aria-label="System health"></div>
+                </div>
+
+                <!-- Quick values: bottom-right -->
+                <div class="quick-widget" id="quick-widget" role="status" aria-label="Flight data"></div>
+            </div>
+
+            <!-- Map toolbar (floating, vertical) -->
+            <div class="map-toolbar">
+                <button type="button" title="Zoom in" aria-label="Zoom in" onclick="FlyMap.getMap().zoomIn()">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="3" x2="7" y2="11"/><line x1="3" y1="7" x2="11" y2="7"/></svg>
+                </button>
+                <button type="button" title="Zoom out" aria-label="Zoom out" onclick="FlyMap.getMap().zoomOut()">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="7" x2="11" y2="7"/></svg>
+                </button>
+                <div class="map-toolbar-sep"></div>
+                <button type="button" id="btn-follow" class="active" title="Follow vehicle" aria-label="Follow vehicle" onclick="FlyMap.toggleFollow()">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="3"/><line x1="7" y1="0" x2="7" y2="3"/><line x1="7" y1="11" x2="7" y2="14"/><line x1="0" y1="7" x2="3" y2="7"/><line x1="11" y1="7" x2="14" y2="7"/></svg>
+                </button>
+                <button type="button" title="Center on vehicle" aria-label="Center on vehicle" onclick="FlyMap.centerOnVehicle()">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="5"/><circle cx="7" cy="7" r="1.5" fill="currentColor"/></svg>
+                </button>
+            </div>
+
+            <!-- Context menu (hidden by default) -->
+            <div id="context-menu" class="map-context-menu"></div>
+        </main>
+
+        <!-- ═══════════════ RIGHT PANEL (slides in for non-fly views) ═══════════════ -->
+        <aside id="panel-area">
+
+            <!-- PLAN panel (Phase 2) -->
+            <div id="panel-plan" class="panel-view">
+                <div class="panel-header">
+                    <span class="panel-title">Mission Plan</span>
+                    <button type="button" class="panel-close" aria-label="Close panel" onclick="Router.switchTo('fly')">&times;</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Plan view content rendered by plan-view.js -->
+                </div>
+            </div>
+
+            <!-- SETUP panel -->
+            <div id="panel-setup" class="panel-view">
+                <div class="panel-header">
+                    <span class="panel-title">Vehicle Setup</span>
+                    <button type="button" class="panel-close" aria-label="Close panel" onclick="Router.switchTo('fly')">&times;</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Rendered by setup-view.js -->
+                </div>
+            </div>
+
+            <!-- PARAMS panel -->
+            <div id="panel-params" class="panel-view">
+                <div class="panel-header">
+                    <span class="panel-title">Parameters</span>
+                    <button type="button" class="panel-close" aria-label="Close panel" onclick="Router.switchTo('fly')">&times;</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Rendered by params-view.js -->
+                </div>
+            </div>
+
+            <!-- LOGS panel -->
+            <div id="panel-logs" class="panel-view">
+                <div class="panel-header">
+                    <span class="panel-title">Flight Logs</span>
+                    <button type="button" class="panel-close" aria-label="Close panel" onclick="Router.switchTo('fly')">&times;</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Rendered by logs-view.js -->
+                </div>
+            </div>
+
+            <!-- STATUS panel -->
+            <div id="panel-status" class="panel-view">
+                <div class="panel-header">
+                    <span class="panel-title">Raw Telemetry</span>
+                    <button type="button" class="panel-close" aria-label="Close panel" onclick="Router.switchTo('fly')">&times;</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Rendered by status-view.js -->
+                </div>
+            </div>
+
+            <!-- SETTINGS panel -->
+            <div id="panel-settings" class="panel-view">
+                <div class="panel-header">
+                    <span class="panel-title">Settings</span>
+                    <button type="button" class="panel-close" aria-label="Close panel" onclick="Router.switchTo('fly')">&times;</button>
+                </div>
+                <div class="panel-body">
+                    <!-- Rendered by settings.js -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- ═══════════════ ACTION BAR ═══════════════ -->
+        <footer id="action-bar">
+
+            <!-- ARM/DISARM -->
+            <div class="arm-group">
+                <div class="slide-to-arm" role="switch" aria-checked="false" aria-label="Arm or disarm vehicle" tabindex="0">
+                    <span class="slide-track-label">ARM &#x276F;&#x276F;</span>
+                    <div class="slide-thumb"></div>
+                </div>
+            </div>
+
+            <div class="action-sep"></div>
+
+            <!-- Flight modes -->
+            <div class="mode-row" id="mode-row"></div>
+
+            <div class="action-sep"></div>
+
+            <!-- Flight actions -->
+            <div class="action-group">
+                <button type="button" class="action-btn takeoff-btn" id="btn-takeoff">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 10V3M3 5l3-3 3 3"/></svg>
+                    TAKEOFF
+                </button>
+                <input type="number" class="alt-input" id="takeoff-alt" value="10" min="1" max="120" title="Altitude (m)">
+                <button type="button" class="action-btn" id="btn-pause">
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><rect x="1" y="1" width="3" height="8"/><rect x="6" y="1" width="3" height="8"/></svg>
+                    HOLD
+                </button>
+            </div>
+
+            <!-- Spacer -->
+            <div style="flex:1"></div>
+
+            <!-- Message log -->
+            <div class="msg-log-bar" id="msg-log" aria-live="polite"></div>
+
+            <!-- KILL -->
+            <div class="kill-group">
+                <button type="button" class="kill-btn" title="Emergency Kill — hold 1.5s">
+                    <span>KILL</span>
+                </button>
+                <span class="kill-label">Hold 1.5s</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ═══════════════ SCRIPTS (order matters) ═══════════════ -->
+    <!-- Core -->
+    <script src="js/state.js"></script>
+    <script src="js/mnp.js"></script>
+    <script src="js/mavlink.js"></script>
+    <script src="js/connection.js"></script>
+    <script src="js/router.js"></script>
+
+    <!-- Fly View -->
+    <script src="js/fly/adi.js"></script>
+    <script src="js/fly/compass.js"></script>
+    <script src="js/fly/tapes.js"></script>
+    <script src="js/fly/battery.js"></script>
+    <script src="js/fly/status.js"></script>
+    <script src="js/fly/quick.js"></script>
+    <script src="js/fly/context-menu.js"></script>
+    <script src="js/fly/map.js"></script>
+    <script src="js/fly/spray-widget.js"></script>
+    <script src="js/fly/video-feed.js"></script>
+    <script src="js/fly/fly-view.js"></script>
+    <script src="js/fly/vessel-tracker.js"></script>
+    <script src="js/fly/wind-overlay.js"></script>
+    <script src="js/fly/thermal-widget.js"></script>
+
+    <!-- Plan View -->
+    <script src="js/plan/mission.js"></script>
+    <script src="js/plan/wp-editor.js"></script>
+    <script src="js/plan/stats.js"></script>
+    <script src="js/plan/validator.js"></script>
+    <script src="js/plan/survey.js"></script>
+    <script src="js/plan/geofence.js"></script>
+    <script src="js/plan/orbit.js"></script>
+    <script src="js/plan/quickshots.js"></script>
+    <script src="js/plan/inspection.js"></script>
+    <script src="js/plan/terrain-profile.js"></script>
+    <script src="js/plan/plan-view.js"></script>
+
+    <!-- Setup View -->
+    <script src="js/setup/checklist.js"></script>
+    <script src="js/setup/frame.js"></script>
+    <script src="js/setup/accel-cal.js"></script>
+    <script src="js/setup/compass-cal.js"></script>
+    <script src="js/setup/radio-cal.js"></script>
+    <script src="js/setup/flight-modes.js"></script>
+    <script src="js/setup/failsafe.js"></script>
+    <script src="js/setup/battery.js"></script>
+    <script src="js/setup/motor-test.js"></script>
+    <script src="js/setup/regulatory-checklist.js"></script>
+    <script src="js/setup/setup-view.js"></script>
+
+    <!-- Params View -->
+    <script src="js/params/param-list.js"></script>
+    <script src="js/params/tuning.js"></script>
+    <script src="js/params/betaflight-import.js"></script>
+    <script src="js/params/params-view.js"></script>
+
+    <!-- UI -->
+    <script src="js/modal.js"></script>
+    <script src="js/toolbar.js"></script>
+    <script src="js/confirm.js"></script>
+    <script src="js/messages.js"></script>
+
+    <!-- Logs View -->
+    <script src="js/battery-lifecycle.js"></script>
+    <script src="js/logs/log-list.js"></script>
+    <script src="js/logs/log-graph.js"></script>
+    <script src="js/logs/playback.js"></script>
+    <script src="js/logs/mavlink-inspector.js"></script>
+    <script src="js/logs/logs-view.js"></script>
+
+    <!-- Status View -->
+    <script src="js/status/status-view.js"></script>
+
+    <!-- Settings + Multi-Vehicle + Offline -->
+    <script src="js/settings.js"></script>
+    <script src="js/multi-vehicle.js"></script>
+    <script src="js/offline-tiles.js"></script>
+
+    <!-- i18n (T2-14) — must load before app boot -->
+    <script src="js/i18n.js"></script>
+
+    <!-- Theme + Tlog + Demo + Audio -->
+    <script src="js/theme.js"></script>
+    <script src="js/tlog.js"></script>
+    <script src="js/demo.js"></script>
+    <script src="js/audio.js"></script>
+
+    <!-- Onboarding (T2-13) — before app.js so Onboarding.init() can be called -->
+    <script src="js/onboarding.js"></script>
+
+    <!-- T3: Tier 3 market expansion features -->
+    <script src="js/fleet.js"></script>
+    <script src="js/dispatch.js"></script>
+    <script src="js/fly/split-view.js"></script>
+    <script src="js/logs/auto-analysis.js"></script>
+
+    <!-- T3-15: ROS2 Bridge -->
+    <script src="js/ros-bridge.js"></script>
+
+    <!-- T3-14: STANAG 4586 Compatibility Notes -->
+    <script src="js/compliance/stanag-notes.js"></script>
+
+    <!-- T3-13: EU C-class Compliance Enforcement -->
+    <script src="js/compliance/eu-compliance.js"></script>
+
+    <!-- T3-19: OTA Firmware Update -->
+    <script src="js/setup/firmware.js"></script>
+
+    <!-- T3-11: Scripting Console -->
+    <script src="js/scripting.js"></script>
+
+    <!-- T3-16: Photogrammetry Integration -->
+    <script src="js/plan/photogrammetry.js"></script>
+
+    <!-- Boot (T1-28: extracted from inline) -->
+    <script src="js/app.js"></script>
+</body>
+</html>

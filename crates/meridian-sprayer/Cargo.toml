@@ -1,0 +1,15 @@
+[package]
+name = "meridian-sprayer"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Sprayer — pump + spinner PWM, ground-speed-proportional flow"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-hal = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-hal/std"]

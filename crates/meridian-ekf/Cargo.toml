@@ -1,0 +1,17 @@
+[package]
+name = "meridian-ekf"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "22-state EKF3 port — extended Kalman filter for state estimation"
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+meridian-bus = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-bus/std"]

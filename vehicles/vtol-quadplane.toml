@@ -1,0 +1,33 @@
+# Meridian Vehicle Definition — VTOL Quadplane
+
+[vehicle]
+name = "VTOL-Quadplane"
+class = "vtol"
+frame = "quadplane"
+
+[physics]
+mass_kg = 4.0
+wing_area_m2 = 0.8
+wing_span_m = 2.0
+max_thrust_n = 40.0
+motor_count = 5  # 4 hover + 1 pusher
+
+[vtol]
+transition_airspeed_ms = 15.0
+transition_timeout_ms = 5000
+back_transition_airspeed_ms = 12.0
+
+[control.hover]
+# Same as quad for hover motors
+roll  = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+pitch = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+yaw   = { kp = 0.180, ki = 0.018, kd = 0.0,    ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+
+[control.fw]
+# Fixed-wing control for cruise
+l1_period = 17.0
+l1_damping = 0.75
+
+[failsafe]
+rc_loss_action = "rtl"
+transition_fail_action = "land"

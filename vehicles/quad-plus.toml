@@ -1,0 +1,34 @@
+# Meridian Vehicle Definition — Quad-Plus
+
+[vehicle]
+name = "Quad-Plus"
+class = "multirotor"
+frame = "quad-plus"
+
+[physics]
+mass_kg = 1.5
+inertia = [0.015, 0.015, 0.025]
+drag_coefficient = 0.1
+max_thrust_n = 30.0
+motor_count = 4
+
+[motors]
+protocol = "dshot600"
+direction = [-1, -1, 1, 1]
+spin_min = 0.15
+spin_max = 0.95
+
+[control.rate]
+roll  = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+pitch = { kp = 0.135, ki = 0.135, kd = 0.0036, ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+yaw   = { kp = 0.180, ki = 0.018, kd = 0.0,    ff = 0.0, imax = 0.5, filt_hz = 20.0 }
+
+[control.attitude]
+roll_p = 4.5
+pitch_p = 4.5
+yaw_p = 4.5
+angle_max_deg = 30.0
+
+[failsafe]
+rc_loss_timeout_ms = 500
+rc_loss_action = "rtl"

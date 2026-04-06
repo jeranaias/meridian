@@ -1,0 +1,14 @@
+[package]
+name = "meridian-types"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Shared types, units, timestamps, vehicle state enums"
+
+[dependencies]
+meridian-math = { workspace = true }
+heapless = { workspace = true }
+
+[features]
+default = []
+std = []

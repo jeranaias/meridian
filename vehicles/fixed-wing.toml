@@ -1,0 +1,59 @@
+# Meridian Vehicle Definition — Fixed-Wing
+# Gains traced to ArduPlane parameter defaults.
+
+[vehicle]
+name = "Fixed-Wing"
+class = "fixed_wing"
+frame = "standard"
+
+[physics]
+mass_kg = 2.0
+inertia = [0.05, 0.10, 0.12]
+wing_area_m2 = 0.5
+wing_span_m = 1.5
+chord_m = 0.33
+cl_alpha = 5.0       # lift curve slope (per rad)
+cd0 = 0.03           # zero-lift drag coefficient
+oswald_efficiency = 0.8
+max_thrust_n = 15.0
+
+[control.tecs]
+# AP_TECS defaults
+time_const = 5.0           # TECS_TIME_CONST
+pitch_damping = 0.0        # TECS_PTCH_DAMP
+throttle_damping = 0.5     # TECS_THR_DAMP
+sink_min = 2.0             # TECS_SINK_MIN (m/s)
+sink_max = 5.0             # TECS_SINK_MAX (m/s)
+airspeed_min = 12.0        # ARSPD_FBW_MIN (m/s)
+airspeed_max = 25.0        # ARSPD_FBW_MAX (m/s)
+airspeed_cruise = 18.0     # TRIM_ARSPD_CM / 100 (m/s)
+
+[control.l1]
+period = 17.0              # NAVL1_PERIOD
+damping = 0.75             # NAVL1_DAMPING
+
+[control.rate]
+roll  = { kp = 0.1, ki = 0.1, kd = 0.01, ff = 0.3, imax = 0.5, filt_hz = 20.0 }
+pitch = { kp = 0.1, ki = 0.1, kd = 0.01, ff = 0.3, imax = 0.5, filt_hz = 20.0 }
+yaw   = { kp = 0.1, ki = 0.02, kd = 0.0, ff = 0.2, imax = 0.5, filt_hz = 20.0 }
+
+[failsafe]
+rc_loss_timeout_ms = 1000
+rc_loss_action = "rtl"
+battery_low_voltage = 10.5
+battery_critical_voltage = 10.0
+
+[modes.default]
+flight_mode_1 = "manual"
+flight_mode_2 = "fly_by_wire_a"
+flight_mode_3 = "fly_by_wire_b"
+flight_mode_4 = "rtl"
+flight_mode_5 = "auto"
+flight_mode_6 = "cruise"
+
+[fence]
+enabled = true
+type = ["altitude", "circle"]
+alt_max_m = 200.0
+radius_m = 500.0
+action = "rtl"

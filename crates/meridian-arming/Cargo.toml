@@ -1,0 +1,9 @@
+[package]
+name = "meridian-arming"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+meridian-types = { workspace = true }
+heapless = { workspace = true }

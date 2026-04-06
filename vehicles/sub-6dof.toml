@@ -1,0 +1,25 @@
+# Meridian Vehicle Definition — 6-DOF Submarine (ROV/AUV)
+
+[vehicle]
+name = "Sub-6DOF"
+class = "sub"
+frame = "bluerov2"
+
+[physics]
+mass_kg = 11.0
+buoyancy_n = 109.0  # slightly positive (mass*g + 1N)
+depth_max_m = 100.0
+drag_linear = [20.0, 25.0, 30.0]
+drag_angular = [2.0, 2.0, 1.5]
+max_thrust_n = 30.0
+
+[control]
+depth_p = 0.5
+heading_p = 1.0
+speed_p = 0.3
+
+[failsafe]
+depth_max_action = "surface"
+comms_loss_timeout_ms = 30000
+comms_loss_action = "surface"
+leak_action = "surface"

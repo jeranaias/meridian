@@ -1,0 +1,39 @@
+# Meridian Vehicle Definition — Skid-Steer Rover
+
+[vehicle]
+name = "Rover-Skid"
+class = "rover"
+frame = "skid_steer"
+
+[physics]
+mass_kg = 5.0
+wheel_base_m = 0.3
+max_speed_ms = 5.0
+max_turn_rate_degs = 90.0
+
+[control.rate]
+yaw = { kp = 0.2, ki = 0.05, kd = 0.0, ff = 0.0, imax = 1.0, filt_hz = 10.0 }
+
+[control.position]
+pos_xy_p = 1.0
+vel_xy_p = 2.0
+vel_xy_i = 0.5
+vel_xy_d = 0.0
+
+[failsafe]
+rc_loss_timeout_ms = 1000
+rc_loss_action = "hold"
+gps_loss_timeout_ms = 5000
+gps_loss_action = "hold"
+
+[modes.default]
+flight_mode_1 = "manual"
+flight_mode_2 = "steering"
+flight_mode_3 = "hold"
+flight_mode_4 = "auto"
+
+[fence]
+enabled = true
+type = ["circle"]
+radius_m = 200.0
+action = "hold"

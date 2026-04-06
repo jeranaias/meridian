@@ -1,0 +1,124 @@
+# IOMCU_F103 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F103xB, 24MHz crystal, 400MHz clock
+
+[board]
+name = "IOMCU_F103"
+board_id = 0
+mcu = "STM32F103xB"
+clock_hz = 400000000
+oscillator_hz = 24000000
+flash_size_kb = 64
+ram_size_kb = 0
+
+[serial]
+order = ["EMPTY", "EMPTY", "EMPTY", "EMPTY"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = false
+
+[[uart]]
+serial_index = 0
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[pwm_output]]
+pwm_num = 1
+timer = 2
+channel = 1
+pin = "A0"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 2
+channel = 2
+pin = "A1"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 4
+channel = 3
+pin = "B8"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 4
+channel = 4
+pin = "B9"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 3
+channel = 1
+pin = "A6"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 3
+channel = 2
+pin = "A7"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 3
+channel = 3
+pin = "B0"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 3
+channel = 4
+pin = "B1"
+af = 2
+complementary = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "B13"
+safety_pin = "B5"
+

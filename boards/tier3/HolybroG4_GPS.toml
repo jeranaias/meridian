@@ -1,0 +1,121 @@
+# HolybroG4_GPS — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32G474, 16MHz crystal, 170MHz clock
+
+[board]
+name = "HolybroG4_GPS"
+board_id = 0
+mcu = "STM32G474"
+clock_hz = 170000000
+oscillator_hz = 16000000
+flash_size_kb = 512
+ram_size_kb = 128
+
+[serial]
+order = ["USART2", "USART3"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 2
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "icm42688"
+bus = 1
+cs = "C14"
+mode = 0
+low_speed_hz = 24000000
+high_speed_hz = 24000000
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B8"
+sda = "B7"
+af = 4
+speed_khz = 400
+internal = true
+
+[[i2c_bus]]
+index = 2
+logical_index = 1
+scl = "A9"
+sda = "A8"
+af = 4
+speed_khz = 400
+internal = true
+
+[[uart]]
+serial_index = 0
+peripheral = "USART2"
+uart_index = 2
+tx = "A2"
+rx = "A3"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART3"
+uart_index = 3
+tx = "B10"
+rx = "B11"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "icm42688"
+rotation = "Yaw180"
+
+[[baro_probe]]
+driver = "Icp201xx"
+bus_type = "I2c"
+bus_index = 0
+address = 0x64
+
+[[compass_probe]]
+driver = "Bmm150"
+bus_type = "I2c"
+bus_index = 0
+address = 0x10
+rotation = "Yaw90"
+external = false
+
+[[compass_probe]]
+driver = "Ist8310"
+bus_type = "I2c"
+bus_index = 0
+address = 0x0E
+rotation = "None"
+external = false
+
+[[compass_probe]]
+driver = "Rm3100"
+bus_type = "I2c"
+bus_index = 0
+address = 0x20
+rotation = "None"
+external = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "C10"
+

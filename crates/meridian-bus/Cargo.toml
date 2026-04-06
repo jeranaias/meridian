@@ -1,0 +1,18 @@
+[package]
+name = "meridian-bus"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Typed pub/sub message bus — lock-free ring buffers (no_std) or crossbeam (std)"
+
+[dependencies]
+meridian-types = { workspace = true }
+heapless = { workspace = true }
+
+[dependencies.crossbeam-channel]
+workspace = true
+optional = true
+
+[features]
+default = []
+std = ["crossbeam-channel", "meridian-types/std"]

@@ -1,0 +1,16 @@
+[package]
+name = "meridian-precland"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Precision landing with per-axis Kalman filters and inertial lag compensation"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-math = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-math/std"]

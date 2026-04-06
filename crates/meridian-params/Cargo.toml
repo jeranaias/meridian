@@ -1,0 +1,19 @@
+[package]
+name = "meridian-params"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Runtime parameter system — flash wear-leveling (embedded) or file (Linux)"
+
+[dependencies]
+meridian-types = { workspace = true }
+heapless = { workspace = true }
+serde = { workspace = true }
+
+[dependencies.toml]
+workspace = true
+optional = true
+
+[features]
+default = []
+std = ["toml", "meridian-types/std", "serde/std"]

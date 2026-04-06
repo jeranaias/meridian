@@ -1,0 +1,16 @@
+[package]
+name = "meridian-adsb"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "ADS-B traffic awareness and threat assessment"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-math = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std"]

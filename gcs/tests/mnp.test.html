@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meridian GCS — MNP Unit Tests</title>
+    <style>
+        body { font-family: 'Consolas', 'JetBrains Mono', monospace; background: #0d0d1a; color: #e0e0e0; padding: 20px; }
+        h1 { color: #2196f3; font-size: 18px; margin-bottom: 12px; }
+        .pass { color: #4caf50; }
+        .fail { color: #f44336; }
+        .section { color: #ff9800; margin-top: 16px; font-weight: bold; }
+        #results { white-space: pre-wrap; line-height: 1.6; }
+        .summary { margin-top: 20px; padding: 10px; border: 1px solid #1e3a5f; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>MNP (Meridian Native Protocol) Unit Tests</h1>
+    <div id="results"></div>
+
+    <!-- Load only mnp.js (standalone module) -->
+    <script src="../js/mnp.js"></script>
+
+    <script>
+    (function () {
+        'use strict';
+
+        var results = document.getElementById('results');
+        var passed = 0;
+        var failed = 0;
+
+        function log(msg) {
+            results.innerHTML += msg + '\n';
+            console.log(msg.replace(/<[^>]+>/g, ''));
+        }
+
+        function assert(condition, testName) {
+            if (condition) {
+                passed++;
+                log('<span class="pass">  PASS</span> ' + testName);
+            } else {
+                failed++;
+                log('<span class="fail">  FAIL</span> ' + testName);
+            }
+        }
+
+        function assertEqual(actual, expected, testName) {
+            if (actual === expected) {
+                passed++;
+                log('<span class="pass">  PASS</span> ' + testName);
+            } else {
+                failed++;
+                log('<span class="fail">  FAIL</span> ' + testName + ' (expected ' + expected + ', got ' + actual + ')');
+            }
+        }
+
+        function assertArrayEqual(actual, expected, testName) {
+            if (actual.length !== expected.length) {
+                failed++;
+                log('<span class="fail">  FAIL</span> ' + testName + ' (length ' + actual.length + ' != ' + expected.length + ')');
+                return;
+            }
+            for (var i = 0; i < actual.length; i++) {
+                if (actual[i] !== expected[i]) {
+                    failed++;
+                    log('<span class="fail">  FAIL</span> ' + testName + ' (byte ' + i + ': ' + actual[i] + ' != ' + expected[i] + ')');
+                    return;
+                }
+            }
+            passed++;
+            log('<span class="pass">  PASS</span> ' + testName);
+        }
+
+        function section(name) {
+            log('\n<span class="section">[' + name + ']</span>');
+        }
+
+        // ================================================================
+        // COBS Encode/Decode Roundtrip
+        // ================================================================
+        section('COBS Encode/Decode');
+
+        // Simple data with no zeros
+        var data1 = new Uint8Array([1, 2, 3, 4, 5]);
+        var enc1 = MNP.cobsEncode(data1);
+        assert(enc1 instanceof Uint8Array, 'cobsEncode returns Uint8Array');
+        assert(enc1[enc1.length - 1] === 0, 'COBS encoded frame ends with 0x00 delimiter');
+
+        // Decode (strip the trailing 0x00 delimiter before decoding)
+        var dec1 = MNP.cobsDecode(enc1.subarray(0, enc1.length - 1));
+        assertArrayEqual(dec1, data1, 'COBS roundtrip: [1,2,3,4,5]');
+
+        // Data with zeros
+        var data2 = new Uint8Array([0, 1, 0, 2, 0]);
+        var enc2 = MNP.cobsEncode(data2);
+        var dec2 = MNP.cobsDecode(enc2.subarray(0, enc2.length - 1));
+        assertArrayEqual(dec2, data2, 'COBS roundtrip: [0,1,0,2,0]');
+
+        // All zeros
+        var data3 = new Uint8Array([0, 0, 0]);
+        var enc3 = MNP.cobsEncode(data3);
+        var dec3 = MNP.cobsDecode(enc3.subarray(0, enc3.length - 1));
+        assertArrayEqual(dec3, data3, 'COBS roundtrip: [0,0,0]');
+
+        // Single byte
+        var data4 = new Uint8Array([42]);
+        var enc4 = MNP.cobsEncode(data4);
+        var dec4 = MNP.cobsDecode(enc4.subarray(0, enc4.length - 1));
+        assertArrayEqual(dec4, data4, 'COBS roundtrip: [42]');
+
+        // Single zero byte
+        var data5 = new Uint8Array([0]);
+        var enc5 = MNP.cobsEncode(data5);
+        var dec5 = MNP.cobsDecode(enc5.subarray(0, enc5.length - 1));
+        assertArrayEqual(dec5, data5, 'COBS roundtrip: [0]');
+
+        // Empty data
+        var data6 = new Uint8Array([]);
+        var enc6 = MNP.cobsEncode(data6);
+        var dec6 = MNP.cobsDecode(enc6.subarray(0, enc6.length - 1));
+        assertArrayEqual(dec6, data6, 'COBS roundtrip: empty');
+
+        // Large data (254 non-zero bytes — tests code=0xFF boundary)
+        var data7 = new Uint8Array(254);
+        for (var i = 0; i < 254; i++) data7[i] = (i % 254) + 1;
+        var enc7 = MNP.cobsEncode(data7);
+        var dec7 = MNP.cobsDecode(enc7.subarray(0, enc7.length - 1));
+        assertArrayEqual(dec7, data7, 'COBS roundtrip: 254 non-zero bytes (0xFF boundary)');
+
+        // 255 non-zero bytes (exceeds one COBS code block)
+        var data8 = new Uint8Array(255);
+        for (var i = 0; i < 255; i++) data8[i] = (i % 254) + 1;
+        var enc8 = MNP.cobsEncode(data8);
+        var dec8 = MNP.cobsDecode(enc8.subarray(0, enc8.length - 1));
+        assertArrayEqual(dec8, data8, 'COBS roundtrip: 255 non-zero bytes');
+
+        // ================================================================
+        // COBS Encoding Properties
+        // ================================================================
+        section('COBS Encoding Properties');
+
+        // No zero bytes should appear in encoded data (except final delimiter)
+        var hasZeroInMiddle = false;
+        for (var i = 0; i < enc1.length - 1; i++) {
+            if (enc1[i] === 0) { hasZeroInMiddle = true; break; }
+        }
+        assert(!hasZeroInMiddle, 'No zero bytes in COBS encoded data (before delimiter)');
+
+        // Encoded is always slightly larger than input (overhead is manageable)
+        assert(enc1.length >= data1.length, 'COBS encoding is at least as long as input');
+        assert(enc1.length <= data1.length + 3, 'COBS overhead is small (at most +3 for small data)');
+
+        // ================================================================
+        // MNP Message Encode Tests
+        // ================================================================
+        section('MNP Message Encoders');
+
+        var armMsg = MNP.encodeArm();
+        assert(armMsg instanceof Uint8Array, 'encodeArm returns Uint8Array');
+        assert(armMsg[armMsg.length - 1] === 0, 'encodeArm ends with COBS delimiter');
+
+        var disarmMsg = MNP.encodeDisarm();
+        assert(disarmMsg instanceof Uint8Array, 'encodeDisarm returns Uint8Array');
+
+        var takeoffMsg = MNP.encodeTakeoff(10.5);
+        assert(takeoffMsg instanceof Uint8Array, 'encodeTakeoff returns Uint8Array');
+
+        var landMsg = MNP.encodeLand();
+        assert(landMsg instanceof Uint8Array, 'encodeLand returns Uint8Array');
+
+        var rtlMsg = MNP.encodeRtl();
+        assert(rtlMsg instanceof Uint8Array, 'encodeRtl returns Uint8Array');
+
+        var modeMsg = MNP.encodeSetMode(4);
+        assert(modeMsg instanceof Uint8Array, 'encodeSetMode returns Uint8Array');
+
+        var gotoMsg = MNP.encodeGoto(35.7516, -120.7710, 50);
+        assert(gotoMsg instanceof Uint8Array, 'encodeGoto returns Uint8Array');
+
+        var paramMsg = MNP.encodeSetParam('ACRO_BAL_ROLL', 1.0);
+        assert(paramMsg instanceof Uint8Array, 'encodeSetParam returns Uint8Array');
+
+        var getParamMsg = MNP.encodeGetParam('RC1_MIN');
+        assert(getParamMsg instanceof Uint8Array, 'encodeGetParam returns Uint8Array');
+
+        var missionItemMsg = MNP.encodeMissionItem(0, 35.75, -120.77, 50);
+        assert(missionItemMsg instanceof Uint8Array, 'encodeMissionItem returns Uint8Array');
+
+        var missionCountMsg = MNP.encodeMissionCount(5);
+        assert(missionCountMsg instanceof Uint8Array, 'encodeMissionCount returns Uint8Array');
+
+        var missionReqMsg = MNP.encodeMissionRequest();
+        assert(missionReqMsg instanceof Uint8Array, 'encodeMissionRequest returns Uint8Array');
+
+        // ================================================================
+        // MNP Decode Tests
+        // ================================================================
+        section('MNP Message Decode');
+
+        // Build a heartbeat message and decode it
+        // Heartbeat: msg_id(0x01), armed(u8), mode(u8), status(u8)
+        var hbPayload = new Uint8Array([0x01, 1, 4, 0]); // armed, GUIDED, status=0
+        var hbEncoded = MNP.cobsEncode(hbPayload);
+        // decode expects the frame WITHOUT the trailing delimiter
+        var hbDecoded = MNP.decode(hbEncoded.subarray(0, hbEncoded.length - 1));
+        assert(hbDecoded !== null, 'Heartbeat decode returns non-null');
+        assertEqual(hbDecoded.type, 'heartbeat', 'Decoded heartbeat type');
+        assertEqual(hbDecoded.armed, true, 'Decoded heartbeat armed = true');
+
+        // Unknown message ID
+        var unkPayload = new Uint8Array([0xFF]);
+        var unkEncoded = MNP.cobsEncode(unkPayload);
+        var unkDecoded = MNP.decode(unkEncoded.subarray(0, unkEncoded.length - 1));
+        assert(unkDecoded !== null, 'Unknown msg ID returns object');
+        assertEqual(unkDecoded.type, 'unknown', 'Unknown message type = "unknown"');
+
+        // Empty frame
+        var emptyDecoded = MNP.decode(new Uint8Array(0));
+        assertEqual(emptyDecoded, null, 'Empty frame returns null');
+
+        // ================================================================
+        // MSG Constants
+        // ================================================================
+        section('MSG Constants');
+
+        assertEqual(MNP.MSG.HEARTBEAT, 0x01, 'MSG.HEARTBEAT = 0x01');
+        assertEqual(MNP.MSG.ATTITUDE, 0x02, 'MSG.ATTITUDE = 0x02');
+        assertEqual(MNP.MSG.POSITION, 0x03, 'MSG.POSITION = 0x03');
+        assertEqual(MNP.MSG.CMD_ARM, 0x80, 'MSG.CMD_ARM = 0x80');
+        assertEqual(MNP.MSG.CMD_GOTO, 0x86, 'MSG.CMD_GOTO = 0x86');
+
+        // MODES array
+        assertEqual(MNP.MODES[0], 'STABILIZE', 'MODES[0] = STABILIZE');
+        assertEqual(MNP.MODES[3], 'RTL', 'MODES[3] = RTL');
+        assertEqual(MNP.MODES[6], 'GUIDED', 'MODES[6] = GUIDED');
+        assert(MNP.MODES.length === 8, 'MODES has 8 entries');
+
+        // ================================================================
+        // Stress Test: Many roundtrips
+        // ================================================================
+        section('Stress Test');
+
+        var stressPass = true;
+        for (var t = 0; t < 100; t++) {
+            var size = Math.floor(Math.random() * 300) + 1;
+            var data = new Uint8Array(size);
+            for (var j = 0; j < size; j++) {
+                data[j] = Math.floor(Math.random() * 256);
+            }
+            var encoded = MNP.cobsEncode(data);
+            var decoded = MNP.cobsDecode(encoded.subarray(0, encoded.length - 1));
+            if (decoded.length !== data.length) {
+                stressPass = false;
+                break;
+            }
+            for (var k = 0; k < data.length; k++) {
+                if (decoded[k] !== data[k]) {
+                    stressPass = false;
+                    break;
+                }
+            }
+            if (!stressPass) break;
+        }
+        assert(stressPass, 'COBS roundtrip: 100 random payloads (1-300 bytes)');
+
+        // ================================================================
+        // Summary
+        // ================================================================
+        var total = passed + failed;
+        var summary = '\n<div class="summary">';
+        if (failed === 0) {
+            summary += '<span class="pass">ALL ' + total + ' TESTS PASSED</span>';
+        } else {
+            summary += '<span class="fail">' + failed + ' FAILED</span> / ' + total + ' total';
+        }
+        summary += '</div>';
+        log(summary);
+        console.log('MNP tests: ' + passed + ' passed, ' + failed + ' failed');
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+[package]
+name = "meridian-gcs"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Web-based ground control station — Rust WASM + JS/HTML/CSS + Leaflet"
+
+[dependencies]
+meridian-math = { workspace = true, features = ["std"] }
+meridian-types = { workspace = true, features = ["std"] }
+meridian-comms = { workspace = true, features = ["std"] }
+
+# WASM deps will be added when we implement Phase 7
+# wasm-bindgen = "0.2"
+# web-sys = "0.3"
+# js-sys = "0.3"
+
+[features]
+default = []

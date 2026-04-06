@@ -1,0 +1,16 @@
+[package]
+name = "meridian-camera"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Camera trigger, video control, distance/time triggering, and geotagging"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-hal = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-hal/std"]

@@ -1,0 +1,80 @@
+# F303_PERIPH — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F303xC, 8MHz crystal, 400MHz clock
+
+[board]
+name = "F303_PERIPH"
+board_id = 0
+mcu = "STM32F303xC"
+clock_hz = 400000000
+oscillator_hz = 8000000
+flash_size_kb = 256
+ram_size_kb = 0
+
+[serial]
+order = ["USART2", "EMPTY", "EMPTY", "USART1"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = false
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B6"
+sda = "B7"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "USART2"
+uart_index = 2
+tx = "A2"
+rx = "A3"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "USART1"
+uart_index = 1
+tx = "A9"
+rx = "A10"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "A4"
+

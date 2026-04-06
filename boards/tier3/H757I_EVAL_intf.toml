@@ -1,0 +1,45 @@
+# H757I_EVAL — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32H757, 25MHz crystal, 400MHz clock
+
+[board]
+name = "H757I_EVAL"
+board_id = 0
+mcu = "STM32H757"
+clock_hz = 400000000
+oscillator_hz = 25000000
+flash_size_kb = 2048
+ram_size_kb = 1024
+
+[usb]
+manufacturer = "ArduPilot"
+product = "%BOARD%"
+
+[serial]
+order = ["USART1"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 1
+
+[[uart]]
+serial_index = 0
+peripheral = "USART1"
+uart_index = 1
+tx = "B14"
+rx = "B15"
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "K3"
+

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meridian GCS — Validator Unit Tests</title>
+    <style>
+        body { font-family: 'Consolas', 'JetBrains Mono', monospace; background: #0d0d1a; color: #e0e0e0; padding: 20px; }
+        h1 { color: #2196f3; font-size: 18px; margin-bottom: 12px; }
+        .pass { color: #4caf50; }
+        .fail { color: #f44336; }
+        .section { color: #ff9800; margin-top: 16px; font-weight: bold; }
+        #results { white-space: pre-wrap; line-height: 1.6; }
+        .summary { margin-top: 20px; padding: 10px; border: 1px solid #1e3a5f; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Validator Unit Tests</h1>
+    <div id="results"></div>
+
+    <!-- Minimal stubs for dependencies -->
+    <script>
+    // Stub meridian global
+    window.meridian = {
+        v: { homeLat: 35.7516, homeLon: -120.7710, homeAlt: 0 },
+        settings: { guidedAltMax: 120, guidedDistMax: 1000 },
+        events: {
+            on: function () {},
+            off: function () {},
+            emit: function () {},
+        },
+        log: function () {},
+    };
+
+    // Stub Mission
+    window.Mission = {
+        CMD: { NAV_WAYPOINT: 16, DO_SET_ROI: 201 },
+        getItems: function () { return []; },
+        getSelectedIdx: function () { return -1; },
+    };
+
+    // Stub PlanStats with haversine
+    window.PlanStats = {
+        getWarningsEl: function () {
+            return document.createElement('div');
+        },
+        haversine: function (lat1, lon1, lat2, lon2) {
+            var R = 6371000;
+            var dLat = (lat2 - lat1) * Math.PI / 180;
+            var dLon = (lon2 - lon1) * Math.PI / 180;
+            var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        },
+    };
+    </script>
+
+    <script src="../js/plan/validator.js"></script>
+
+    <script>
+    (function () {
+        'use strict';
+
+        var results = document.getElementById('results');
+        var passed = 0;
+        var failed = 0;
+
+        function log(msg) {
+            results.innerHTML += msg + '\n';
+            console.log(msg.replace(/<[^>]+>/g, ''));
+        }
+
+        function assert(condition, testName) {
+            if (condition) {
+                passed++;
+                log('<span class="pass">  PASS</span> ' + testName);
+            } else {
+                failed++;
+                log('<span class="fail">  FAIL</span> ' + testName);
+            }
+        }
+
+        function assertEqual(actual, expected, testName) {
+            if (actual === expected) {
+                passed++;
+                log('<span class="pass">  PASS</span> ' + testName);
+            } else {
+                failed++;
+                log('<span class="fail">  FAIL</span> ' + testName + ' (expected ' + expected + ', got ' + actual + ')');
+            }
+        }
+
+        function assertClose(actual, expected, tolerance, testName) {
+            if (Math.abs(actual - expected) <= tolerance) {
+                passed++;
+                log('<span class="pass">  PASS</span> ' + testName);
+            } else {
+                failed++;
+                log('<span class="fail">  FAIL</span> ' + testName + ' (expected ~' + expected + ', got ' + actual + ')');
+            }
+        }
+
+        function section(name) {
+            log('\n<span class="section">[' + name + ']</span>');
+        }
+
+        // ================================================================
+        // Haversine Distance Tests
+        // ================================================================
+        section('Haversine Distance');
+
+        // Same point should be 0
+        var d0 = PlanStats.haversine(35.7516, -120.7710, 35.7516, -120.7710);
+        assertClose(d0, 0, 0.1, 'Same point distance = 0');
+
+        // Known distance: ~111km per degree latitude
+        var d1 = PlanStats.haversine(35.0, -120.0, 36.0, -120.0);
+        assertClose(d1, 111195, 500, '1 degree latitude ~ 111km');
+
+        // Short distance: 100m north
+        var dShort = PlanStats.haversine(35.0, -120.0, 35.0009, -120.0);
+        assertClose(dShort, 100, 5, '0.0009 deg lat ~ 100m');
+
+        // Very close points: less than 1m
+        var dTiny = PlanStats.haversine(35.0, -120.0, 35.000005, -120.0);
+        assert(dTiny < 1, 'Very close points are < 1m apart');
+
+        // ================================================================
+        // Altitude Check Tests
+        // ================================================================
+        section('Altitude Checks');
+
+        // Test that validator catches negative altitude
+        var warningsEl = document.createElement('div');
+        PlanStats.getWarningsEl = function () { return warningsEl; };
+
+        // Mock Mission.getItems to return a waypoint below 0
+        Mission.getItems = function () {
+            return [{ lat: 35.75, lon: -120.77, alt: -5, command: 16, seq: 0 }];
+        };
+
+        PlanValidator.validate();
+        assert(warningsEl.innerHTML.indexOf('below 0') >= 0, 'Negative altitude produces warning');
+
+        // Mock with altitude above max
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [{ lat: 35.75, lon: -120.77, alt: 200, command: 16, seq: 0 }];
+        };
+        PlanValidator.validate();
+        assert(warningsEl.innerHTML.indexOf('exceeds limit') >= 0, 'Over-max altitude produces warning');
+
+        // Valid altitude should produce no warnings
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [{ lat: 35.75, lon: -120.77, alt: 50, command: 16, seq: 0 }];
+        };
+        PlanValidator.validate();
+        assertEqual(warningsEl.innerHTML, '', 'Valid altitude produces no warning');
+
+        // ================================================================
+        // Distance Check Tests
+        // ================================================================
+        section('Distance Checks');
+
+        // Waypoint far from home
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [{ lat: 36.75, lon: -120.77, alt: 50, command: 16, seq: 0 }];
+        };
+        PlanValidator.validate();
+        assert(warningsEl.innerHTML.indexOf('from home') >= 0, 'Far waypoint produces distance warning');
+
+        // Waypoint near home
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [{ lat: 35.752, lon: -120.771, alt: 50, command: 16, seq: 0 }];
+        };
+        PlanValidator.validate();
+        assert(warningsEl.innerHTML.indexOf('from home') < 0, 'Near waypoint produces no distance warning');
+
+        // ================================================================
+        // Proximity Check Tests
+        // ================================================================
+        section('Proximity Checks');
+
+        // Two waypoints < 1m apart
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [
+                { lat: 35.75, lon: -120.77, alt: 50, command: 16, seq: 0 },
+                { lat: 35.750001, lon: -120.770001, alt: 50, command: 16, seq: 1 },
+            ];
+        };
+        PlanValidator.validate();
+        assert(warningsEl.innerHTML.indexOf('< 1m apart') >= 0, 'Adjacent WPs < 1m apart produces proximity warning');
+
+        // Two waypoints far apart
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [
+                { lat: 35.75, lon: -120.77, alt: 50, command: 16, seq: 0 },
+                { lat: 35.76, lon: -120.77, alt: 50, command: 16, seq: 1 },
+            ];
+        };
+        PlanValidator.validate();
+        assert(warningsEl.innerHTML.indexOf('< 1m apart') < 0, 'Separated WPs produce no proximity warning');
+
+        // DO_SET_ROI should not trigger proximity warning
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [
+                { lat: 35.75, lon: -120.77, alt: 50, command: 16, seq: 0 },
+                { lat: 35.750001, lon: -120.770001, alt: 50, command: 201, seq: 1 },
+            ];
+        };
+        PlanValidator.validate();
+        assert(warningsEl.innerHTML.indexOf('< 1m apart') < 0, 'DO_SET_ROI near WP does not trigger proximity warning');
+
+        // ================================================================
+        // Empty Mission
+        // ================================================================
+        section('Edge Cases');
+
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () { return []; };
+        PlanValidator.validate();
+        assertEqual(warningsEl.innerHTML, '', 'Empty mission produces no warnings');
+
+        // Single waypoint
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [{ lat: 35.75, lon: -120.77, alt: 50, command: 16, seq: 0 }];
+        };
+        PlanValidator.validate();
+        assertEqual(warningsEl.innerHTML, '', 'Single valid waypoint produces no warnings');
+
+        // Multiple warnings at once
+        warningsEl.innerHTML = '';
+        Mission.getItems = function () {
+            return [
+                { lat: 35.75, lon: -120.77, alt: -10, command: 16, seq: 0 },
+                { lat: 36.75, lon: -120.77, alt: 200, command: 16, seq: 1 },
+            ];
+        };
+        PlanValidator.validate();
+        var warnCount = (warningsEl.innerHTML.match(/plan-warn-item/g) || []).length;
+        assert(warnCount >= 2, 'Multiple issues produce multiple warnings (got ' + warnCount + ')');
+
+        // ================================================================
+        // Summary
+        // ================================================================
+        var total = passed + failed;
+        var summary = '\n<div class="summary">';
+        if (failed === 0) {
+            summary += '<span class="pass">ALL ' + total + ' TESTS PASSED</span>';
+        } else {
+            summary += '<span class="fail">' + failed + ' FAILED</span> / ' + total + ' total';
+        }
+        summary += '</div>';
+        log(summary);
+        console.log('Validator tests: ' + passed + ' passed, ' + failed + ' failed');
+    })();
+    </script>
+</body>
+</html>

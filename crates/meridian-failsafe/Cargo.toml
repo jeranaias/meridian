@@ -1,0 +1,17 @@
+[package]
+name = "meridian-failsafe"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Failsafe monitors, pre-arm checks — concrete types, no dynamic dispatch"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-bus = { workspace = true }
+meridian-modes = { workspace = true }
+meridian-fence = { workspace = true }
+heapless = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-bus/std"]

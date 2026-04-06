@@ -1,0 +1,145 @@
+/* ============================================================
+   theme-dark.css — Dark theme overrides
+   Applied when <html data-theme="dark">
+   ============================================================ */
+
+html[data-theme="dark"],
+:root[data-theme="dark"] {
+    --c-bg:           #080b10;
+    --c-bg-raised:    #0e1218;
+    --c-bg-panel:     #111820;
+    --c-bg-instr:     rgba(8, 12, 18, 0.85);
+    --c-bg-hud:       rgba(10, 14, 20, 0.8);
+    --c-bg-input:     #161d28;
+    --c-border:       #1e2a38;
+    --c-border-focus: #2e4460;
+    --c-groove:       rgba(255,255,255,0.04);
+
+    --c-emergency:    #ff1744;
+    --c-warning:      #ffa726;
+    --c-armed:        #ff6d00;
+    --c-safe:         #00e676;
+    --c-primary:      #00e5ff;
+    --c-info:         #448aff;
+    --c-special:      #e040fb;
+    --c-neutral:      #7b8da3;
+    --c-neutral-dim:  #4a5a70;
+    --c-text:         #d8e0ea;
+    --c-text-dim:     #6a7a90;
+
+    --c-sky:          #1a3a6a;
+    --c-ground:       #7a4e2e;
+}
+
+/* Dark toolbar/actionbar shadows */
+[data-theme="dark"] #toolbar {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    border-bottom-color: rgba(255,255,255,0.03);
+}
+
+[data-theme="dark"] #action-bar {
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.3);
+    border-top-color: rgba(255,255,255,0.03);
+}
+
+/* Dark mode buttons */
+[data-theme="dark"] .mode-btn {
+    background: transparent;
+    box-shadow: none;
+}
+
+[data-theme="dark"] .mode-btn.active {
+    background: rgba(0, 229, 255, 0.12);
+    border-color: var(--c-primary);
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.15);
+}
+
+[data-theme="dark"] .action-btn {
+    background: transparent;
+    box-shadow: none;
+}
+
+[data-theme="dark"] .msg-btn,
+[data-theme="dark"] .kill-btn {
+    background: var(--c-bg);
+    box-shadow: none;
+}
+
+[data-theme="dark"] .slide-to-arm {
+    background: var(--c-bg);
+}
+
+/* Dark HUD shadows */
+[data-theme="dark"] .adi-container,
+[data-theme="dark"] .compass-container,
+[data-theme="dark"] .tape-speed,
+[data-theme="dark"] .tape-alt {
+    box-shadow: 0 2px 16px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] .battery-widget,
+[data-theme="dark"] .health-grid,
+[data-theme="dark"] .quick-item {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] #panel-area {
+    border-left-color: rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] #panel-area.open {
+    box-shadow: -4px 0 24px rgba(0,0,0,0.5);
+}
+
+/* Dark Leaflet */
+[data-theme="dark"] .leaflet-control-zoom a {
+    background: var(--c-bg-panel) !important;
+    color: var(--c-text) !important;
+    border-color: var(--c-border) !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.3) !important;
+}
+
+[data-theme="dark"] .leaflet-control-attribution {
+    background: rgba(8, 11, 16, 0.8) !important;
+    color: var(--c-neutral-dim) !important;
+}
+
+/* Dark conn indicator */
+[data-theme="dark"] .conn-indicator {
+    border-color: var(--c-border);
+}
+
+/* Dark context menu */
+[data-theme="dark"] .map-context-menu {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+[data-theme="dark"] .context-item:hover {
+    background: rgba(0, 229, 255, 0.06);
+}
+
+/* Dark map toolbar */
+[data-theme="dark"] .map-toolbar {
+    border-color: var(--c-border);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .map-toolbar button:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+[data-theme="dark"] .toolbar-nav button:hover {
+    background: rgba(255,255,255,0.04);
+}
+
+[data-theme="dark"] .toolbar-nav button.active {
+    background: rgba(0, 229, 255, 0.08);
+}
+
+[data-theme="dark"] .toolbar-settings:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+[data-theme="dark"] .panel-close:hover {
+    background: rgba(255,255,255,0.06);
+}

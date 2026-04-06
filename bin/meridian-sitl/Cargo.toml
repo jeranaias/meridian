@@ -1,0 +1,29 @@
+[package]
+name = "meridian-sitl-bin"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "SITL binary — software-in-the-loop simulation"
+
+[dependencies]
+meridian-math = { workspace = true, features = ["std"] }
+meridian-types = { workspace = true, features = ["std"] }
+meridian-bus = { workspace = true, features = ["std"] }
+meridian-ekf = { workspace = true, features = ["std"] }
+meridian-ahrs = { workspace = true, features = ["std"] }
+meridian-control = { workspace = true, features = ["std"] }
+meridian-mixing = { workspace = true, features = ["std"] }
+meridian-nav = { workspace = true, features = ["std"] }
+meridian-modes = { workspace = true, features = ["std"] }
+meridian-mission = { workspace = true, features = ["std"] }
+meridian-failsafe = { workspace = true, features = ["std"] }
+meridian-fence = { workspace = true, features = ["std"] }
+meridian-vehicle = { workspace = true, features = ["std"] }
+meridian-hal = { workspace = true, features = ["std"] }
+meridian-comms = { workspace = true, features = ["std"] }
+meridian-mavlink = { workspace = true, features = ["std"] }
+meridian-log = { workspace = true, features = ["std"] }
+meridian-params = { workspace = true, features = ["std"] }
+meridian-rc = { workspace = true, features = ["std"] }
+meridian-sitl = { workspace = true }
+meridian-platform-sitl = { workspace = true }

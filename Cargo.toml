@@ -1,0 +1,123 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/meridian-sync",
+    "crates/meridian-math",
+    "crates/meridian-types",
+    "crates/meridian-bus",
+    "crates/meridian-ekf",
+    "crates/meridian-ahrs",
+    "crates/meridian-control",
+    "crates/meridian-mixing",
+    "crates/meridian-nav",
+    "crates/meridian-modes",
+    "crates/meridian-mission",
+    "crates/meridian-failsafe",
+    "crates/meridian-fence",
+    "crates/meridian-terrain",
+    "crates/meridian-vehicle",
+    "crates/meridian-hal",
+    "crates/meridian-drivers",
+    "crates/meridian-rc",
+    "crates/meridian-comms",
+    "crates/meridian-mavlink",
+    "crates/meridian-log",
+    "crates/meridian-params",
+    "crates/meridian-sitl",
+    "crates/meridian-arming",
+    "crates/meridian-boardcfg",
+    "crates/meridian-platform-sitl",
+    "crates/meridian-platform-stm32",
+    "crates/meridian-platform-linux",
+    "crates/meridian-gcs",
+    "crates/meridian-mount",
+    "crates/meridian-camera",
+    "crates/meridian-precland",
+    "crates/meridian-autotune",
+    "crates/meridian-fft",
+    "crates/meridian-opendroneid",
+    "crates/meridian-proximity",
+    "crates/meridian-osd",
+    "crates/meridian-notify",
+    "crates/meridian-can",
+    "crates/meridian-adsb",
+    "crates/meridian-heli",
+    "crates/meridian-wasm",
+    "crates/meridian-parachute",
+    "crates/meridian-gripper",
+    "crates/meridian-winch",
+    "crates/meridian-landing-gear",
+    "crates/meridian-sprayer",
+    "bin/meridian-sitl",
+    "bin/meridian-linux",
+    "bin/meridian-stm32",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/jeranaias/meridian"
+
+[workspace.dependencies]
+# Internal crates
+meridian-sync = { path = "crates/meridian-sync" }
+meridian-math = { path = "crates/meridian-math" }
+meridian-types = { path = "crates/meridian-types" }
+meridian-bus = { path = "crates/meridian-bus" }
+meridian-ekf = { path = "crates/meridian-ekf" }
+meridian-ahrs = { path = "crates/meridian-ahrs" }
+meridian-control = { path = "crates/meridian-control" }
+meridian-mixing = { path = "crates/meridian-mixing" }
+meridian-nav = { path = "crates/meridian-nav" }
+meridian-modes = { path = "crates/meridian-modes" }
+meridian-mission = { path = "crates/meridian-mission" }
+meridian-failsafe = { path = "crates/meridian-failsafe" }
+meridian-fence = { path = "crates/meridian-fence" }
+meridian-terrain = { path = "crates/meridian-terrain" }
+meridian-vehicle = { path = "crates/meridian-vehicle" }
+meridian-hal = { path = "crates/meridian-hal" }
+meridian-drivers = { path = "crates/meridian-drivers" }
+meridian-rc = { path = "crates/meridian-rc" }
+meridian-comms = { path = "crates/meridian-comms" }
+meridian-mavlink = { path = "crates/meridian-mavlink" }
+meridian-log = { path = "crates/meridian-log" }
+meridian-params = { path = "crates/meridian-params" }
+meridian-sitl = { path = "crates/meridian-sitl" }
+meridian-platform-sitl = { path = "crates/meridian-platform-sitl" }
+meridian-boardcfg = { path = "crates/meridian-boardcfg" }
+meridian-platform-stm32 = { path = "crates/meridian-platform-stm32" }
+meridian-platform-linux = { path = "crates/meridian-platform-linux" }
+meridian-gcs = { path = "crates/meridian-gcs" }
+meridian-mount = { path = "crates/meridian-mount" }
+meridian-camera = { path = "crates/meridian-camera" }
+meridian-precland = { path = "crates/meridian-precland" }
+meridian-autotune = { path = "crates/meridian-autotune" }
+meridian-fft = { path = "crates/meridian-fft" }
+meridian-osd = { path = "crates/meridian-osd" }
+meridian-notify = { path = "crates/meridian-notify" }
+meridian-can = { path = "crates/meridian-can" }
+meridian-adsb = { path = "crates/meridian-adsb" }
+meridian-heli = { path = "crates/meridian-heli" }
+meridian-wasm = { path = "crates/meridian-wasm" }
+meridian-parachute = { path = "crates/meridian-parachute" }
+meridian-gripper = { path = "crates/meridian-gripper" }
+meridian-winch = { path = "crates/meridian-winch" }
+meridian-landing-gear = { path = "crates/meridian-landing-gear" }
+meridian-sprayer = { path = "crates/meridian-sprayer" }
+
+# External dependencies — shared versions
+heapless = "0.8"
+postcard = { version = "1.0", default-features = false }
+serde = { version = "1.0", default-features = false, features = ["derive"] }
+toml = "0.8"
+crossbeam-channel = "0.5"
+num-traits = { version = "0.2", default-features = false, features = ["libm"] }
+libm = "0.2"
+
+[profile.release]
+opt-level = "s"       # Size-optimized for embedded
+lto = true
+codegen-units = 1
+debug = true          # Keep debug info for crash analysis
+strip = false

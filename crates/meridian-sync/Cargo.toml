@@ -1,0 +1,21 @@
+[package]
+name = "meridian-sync"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+description = "Synchronization primitives for Meridian (no_std, RTIC-aware recursive mutex)"
+
+[features]
+default = []
+# Enable std-backed tests (for development only, not for embedded targets)
+std = []
+
+[dependencies]
+
+[dev-dependencies]
+# Used only in tests (std environment)
+
+[[test]]
+name = "recursive_mutex"
+path = "tests/recursive_mutex.rs"

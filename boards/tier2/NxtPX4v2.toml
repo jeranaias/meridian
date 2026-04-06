@@ -1,0 +1,258 @@
+# NxtPX4v2 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32H743, 16MHz crystal, 400MHz clock
+
+[board]
+name = "NxtPX4v2"
+board_id = 0
+mcu = "STM32H743"
+clock_hz = 400000000
+oscillator_hz = 16000000
+flash_size_kb = 2048
+ram_size_kb = 1024
+
+[serial]
+order = ["OTG1", "USART2", "UART4", "USART1", "USART3", "UART7", "UART5", "UART8"]
+
+[features]
+sdcard = true
+iomcu = false
+ethernet = false
+can = false
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 3
+sck = "B3"
+miso = "B4"
+mosi = "B2"
+af = 6
+dma_noshare = false
+
+[[spi_bus]]
+index = 4
+sck = "E2"
+miso = "E5"
+mosi = "E6"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "imu0_a"
+bus = 1
+cs = "A2"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[spi_device]]
+name = "imu0_g"
+bus = 1
+cs = "A3"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[spi_device]]
+name = "imu1_a"
+bus = 4
+cs = "C13"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[spi_device]]
+name = "imu1_g"
+bus = 4
+cs = "C2"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B6"
+sda = "B7"
+af = 4
+speed_khz = 400
+internal = false
+
+[[i2c_bus]]
+index = 4
+logical_index = 1
+scl = "D12"
+sda = "D13"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "D6"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "UART4"
+uart_index = 4
+tx = "B9"
+rx = "B8"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "USART1"
+uart_index = 1
+tx = "A9"
+rx = "A10"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 4
+peripheral = "USART3"
+uart_index = 3
+tx = "D8"
+rx = "D9"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 5
+peripheral = "UART7"
+uart_index = 7
+rx = "E7"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 6
+peripheral = "UART5"
+uart_index = 5
+tx = "B13"
+rx = "B12"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 7
+peripheral = "UART8"
+uart_index = 8
+tx = "E1"
+rx = "E0"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[pwm_output]]
+pwm_num = 1
+timer = 1
+channel = 1
+pin = "E9"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 1
+channel = 2
+pin = "E11"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 1
+channel = 3
+pin = "E13"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 1
+channel = 4
+pin = "E14"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 2
+channel = 3
+pin = "B10"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 2
+channel = 4
+pin = "B11"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 3
+channel = 3
+pin = "B0"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 3
+channel = 4
+pin = "B1"
+af = 2
+complementary = false
+
+[[imu_probe]]
+driver = "Bmi088"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "imu0_a"
+rotation = "Roll180Yaw90"
+
+[[imu_probe]]
+driver = "Bmi088"
+bus_type = "Spi"
+bus_index = 4
+spi_device = "imu1_a"
+rotation = "Roll180Yaw90"
+
+[[baro_probe]]
+driver = "Spl06"
+bus_type = "I2c"
+bus_index = 0
+address = 0x77
+
+[adc]
+voltage_pin = 4
+current_pin = 8
+voltage_scale = 10.2
+current_scale = 20.4
+
+[misc]
+led_pin = "D15"
+

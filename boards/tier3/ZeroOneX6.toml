@@ -1,0 +1,330 @@
+# ZeroOne_X6 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32H743, 16MHz crystal, 400MHz clock
+
+[board]
+name = "ZeroOne_X6"
+board_id = 0
+mcu = "STM32H743"
+clock_hz = 400000000
+oscillator_hz = 16000000
+flash_size_kb = 2048
+ram_size_kb = 1024
+
+[serial]
+order = ["OTG1", "UART7", "UART5", "USART1", "UART8", "USART2", "UART4", "USART3", "OTG2"]
+
+[features]
+sdcard = true
+iomcu = true
+ethernet = true
+can = true
+can_bus_count = 2
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "G9"
+mosi = "B5"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 2
+sck = "I1"
+miso = "I2"
+mosi = "I3"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 3
+sck = "C10"
+miso = "C11"
+mosi = "B2"
+af = 6
+dma_noshare = false
+
+[[spi_bus]]
+index = 5
+sck = "F7"
+miso = "H7"
+mosi = "F11"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "icm45686_1"
+bus = 2
+cs = "H5"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 16000000
+
+[[spi_device]]
+name = "bmi088_g"
+bus = 3
+cs = "I8"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[spi_device]]
+name = "bmi088_a"
+bus = 3
+cs = "I4"
+mode = 3
+low_speed_hz = 10000000
+high_speed_hz = 10000000
+
+[[spi_device]]
+name = "icm45686_2"
+bus = 1
+cs = "I9"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 16000000
+
+[[spi_device]]
+name = "ramtron"
+bus = 5
+cs = "G7"
+mode = 3
+low_speed_hz = 8000000
+high_speed_hz = 8000000
+
+[[i2c_bus]]
+index = 4
+logical_index = 0
+scl = "F14"
+sda = "F15"
+af = 4
+speed_khz = 400
+internal = true
+
+[[i2c_bus]]
+index = 1
+logical_index = 1
+scl = "B8"
+sda = "B9"
+af = 4
+speed_khz = 400
+internal = false
+
+[[i2c_bus]]
+index = 2
+logical_index = 2
+scl = "F1"
+sda = "F0"
+af = 4
+speed_khz = 400
+internal = false
+
+[[i2c_bus]]
+index = 3
+logical_index = 3
+scl = "A8"
+sda = "H8"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "UART7"
+uart_index = 7
+tx = "E8"
+rx = "F6"
+cts = "E10"
+rts = "F8"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "UART5"
+uart_index = 5
+tx = "C12"
+rx = "D2"
+cts = "C9"
+rts = "C8"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "USART1"
+uart_index = 1
+tx = "B6"
+rx = "B7"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 4
+peripheral = "UART8"
+uart_index = 8
+tx = "E1"
+rx = "E0"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 5
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "A3"
+cts = "D3"
+rts = "D4"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 6
+peripheral = "UART4"
+uart_index = 4
+tx = "H13"
+rx = "H14"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 7
+peripheral = "USART3"
+uart_index = 3
+tx = "D8"
+rx = "D9"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 8
+peripheral = "OTG2"
+is_usb = true
+default_baud = 115200
+default_protocol = 0  # None
+
+[[pwm_output]]
+pwm_num = 1
+timer = 5
+channel = 4
+pin = "I0"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 5
+channel = 3
+pin = "H12"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 5
+channel = 2
+pin = "H11"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 5
+channel = 1
+pin = "H10"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 4
+channel = 2
+pin = "D13"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 4
+channel = 3
+pin = "D14"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 12
+channel = 1
+pin = "H6"
+af = 9
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 12
+channel = 2
+pin = "H9"
+af = 9
+complementary = false
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 2
+spi_device = "icm45686_1"
+rotation = "Roll180Yaw270"
+
+[[imu_probe]]
+driver = "Bmi088"
+bus_type = "Spi"
+bus_index = 3
+spi_device = "bmi088_a"
+rotation = "Pitch180"
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "icm45686_2"
+rotation = "None"
+
+[[baro_probe]]
+driver = "Icp201xx"
+bus_type = "I2c"
+bus_index = 0
+address = 0x64
+
+[[baro_probe]]
+driver = "Icp201xx"
+bus_type = "I2c"
+bus_index = 2
+address = 0x63
+
+[[compass_probe]]
+driver = "Rm3100"
+bus_type = "I2c"
+bus_index = 0
+address = 0x20
+rotation = "Pitch180"
+external = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "D10"
+buzzer_pin = "F9"
+safety_pin = "F5"
+

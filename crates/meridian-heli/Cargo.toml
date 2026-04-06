@@ -1,0 +1,17 @@
+[package]
+name = "meridian-heli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Helicopter support: swashplate mixing, rotor speed control, autorotation"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-control = { workspace = true }
+meridian-mixing = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std"]

@@ -1,0 +1,16 @@
+[package]
+name = "meridian-autotune"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "PID auto-tuning via multirotor twitch method"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-control = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-control/std"]

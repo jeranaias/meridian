@@ -1,0 +1,17 @@
+[package]
+name = "meridian-ahrs"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "AHRS manager — multi-core EKF, lane switching, DCM fallback"
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+meridian-bus = { workspace = true }
+meridian-ekf = { workspace = true }
+heapless = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-bus/std", "meridian-ekf/std"]

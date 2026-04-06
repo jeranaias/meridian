@@ -1,0 +1,292 @@
+# PixFlamingoF767_V1 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F767xx, 24MHz crystal, 400MHz clock
+
+[board]
+name = "PixFlamingoF767_V1"
+board_id = 0
+mcu = "STM32F767xx"
+clock_hz = 400000000
+oscillator_hz = 24000000
+flash_size_kb = 2048
+ram_size_kb = 0
+
+[usb]
+manufacturer = "Dheeran labs"
+product = "PixFlamingo"
+
+[serial]
+order = ["OTG1", "USART3", "USART6", "USART1", "EMPTY", "UART7", "USART2"]
+
+[features]
+sdcard = true
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 1
+
+[[spi_bus]]
+index = 1
+sck = "A5"
+miso = "A6"
+mosi = "A7"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 2
+sck = "D3"
+miso = "C2"
+mosi = "C3"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "icm42670"
+bus = 2
+cs = "D0"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "mpu6500"
+bus = 2
+cs = "E0"
+mode = 3
+low_speed_hz = 1000000
+high_speed_hz = 4000000
+
+[[spi_device]]
+name = "ms5611_int"
+bus = 1
+cs = "B5"
+mode = 3
+low_speed_hz = 20000000
+high_speed_hz = 20000000
+
+[[spi_device]]
+name = "lis3mdl"
+bus = 2
+cs = "D7"
+mode = 3
+low_speed_hz = 500000
+high_speed_hz = 500000
+
+[[spi_device]]
+name = "bmp280"
+bus = 1
+cs = "B5"
+mode = 3
+low_speed_hz = 1000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "dps310"
+bus = 1
+cs = "B5"
+mode = 3
+low_speed_hz = 5000000
+high_speed_hz = 5000000
+
+[[i2c_bus]]
+index = 2
+logical_index = 0
+scl = "B10"
+sda = "B11"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "USART3"
+uart_index = 3
+tx = "D8"
+rx = "D9"
+cts = "B13"
+rts = "B14"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "USART6"
+uart_index = 6
+tx = "C6"
+rx = "C7"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "USART1"
+uart_index = 1
+tx = "B6"
+rx = "B7"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 4
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 5
+peripheral = "UART7"
+uart_index = 7
+tx = "B4"
+rx = "B3"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 6
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "D6"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[pwm_output]]
+pwm_num = 1
+timer = 1
+channel = 4
+pin = "E14"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 1
+channel = 3
+pin = "E13"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 1
+channel = 2
+pin = "E11"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 1
+channel = 1
+pin = "E9"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 5
+channel = 1
+pin = "A0"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 5
+channel = 2
+pin = "A1"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 5
+channel = 3
+pin = "A2"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 5
+channel = 4
+pin = "A3"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 9
+timer = 10
+channel = 1
+pin = "B8"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 10
+timer = 8
+channel = 3
+pin = "B15"
+af = 1
+complementary = true
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 2
+spi_device = "icm42670"
+rotation = "Yaw270"
+
+[[imu_probe]]
+driver = "Invensense"
+bus_type = "Spi"
+bus_index = 2
+spi_device = "mpu6500"
+rotation = "Roll180"
+
+[[baro_probe]]
+driver = "Ms5611"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "ms5611_int"
+
+[[baro_probe]]
+driver = "Bmp280"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "bmp280"
+
+[[baro_probe]]
+driver = "Dps310"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "dps310"
+
+[[compass_probe]]
+driver = "Lis3mdl"
+bus_type = "Spi"
+bus_index = 0
+address = 0x00
+rotation = "None"
+external = false
+
+[adc]
+voltage_pin = 11
+current_pin = 10
+voltage_scale = 10.1
+current_scale = 17.0
+
+[misc]
+led_pin = "E12"
+buzzer_pin = "D12"
+safety_pin = "E15"
+

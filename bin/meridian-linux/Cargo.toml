@@ -1,0 +1,11 @@
+[package]
+name = "meridian-linux-bin"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Linux companion binary"
+
+[dependencies]
+meridian-types = { workspace = true, features = ["std"] }
+meridian-hal = { workspace = true, features = ["std"] }
+meridian-platform-linux = { workspace = true }

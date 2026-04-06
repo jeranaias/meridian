@@ -1,0 +1,25 @@
+[package]
+name = "meridian-sitl"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "SITL physics engine — rigid body dynamics, sensor simulation, deterministic replay"
+
+[dependencies]
+meridian-math = { workspace = true, features = ["std"] }
+meridian-types = { workspace = true, features = ["std"] }
+meridian-bus = { workspace = true, features = ["std"] }
+meridian-hal = { workspace = true, features = ["std"] }
+meridian-vehicle = { workspace = true, features = ["std"] }
+meridian-mixing = { workspace = true, features = ["std"] }
+meridian-ekf = { workspace = true, features = ["std"] }
+meridian-ahrs = { workspace = true, features = ["std"] }
+meridian-control = { workspace = true, features = ["std"] }
+meridian-modes = { workspace = true, features = ["std"] }
+meridian-nav = { workspace = true, features = ["std"] }
+meridian-failsafe = { workspace = true, features = ["std"] }
+meridian-fence = { workspace = true, features = ["std"] }
+meridian-mission = { workspace = true, features = ["std"] }
+meridian-comms = { workspace = true, features = ["std"] }
+heapless = { workspace = true }
+libm = { workspace = true }

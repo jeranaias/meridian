@@ -1,0 +1,21 @@
+[package]
+name = "meridian-vehicle"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Vehicle definition loader — TOML configs, dynamics models, validation"
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+heapless = { workspace = true }
+serde = { workspace = true }
+libm = { workspace = true }
+
+[dependencies.toml]
+workspace = true
+optional = true
+
+[features]
+default = []
+std = ["toml", "meridian-types/std", "serde/std"]

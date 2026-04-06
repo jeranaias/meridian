@@ -1,0 +1,24 @@
+# Meridian Vehicle Definition — Differential Thrust Boat (USV)
+
+[vehicle]
+name = "Boat-Differential"
+class = "boat"
+frame = "differential"
+
+[physics]
+mass_kg = 10.0
+hull_length_m = 1.0
+max_speed_ms = 3.0
+max_thrust_n = 15.0
+drag_coefficient = 8.0  # water drag (much higher than air)
+
+[control]
+speed_p = 0.3
+turn_p = 0.8
+wp_radius = 3.0
+
+[failsafe]
+rc_loss_timeout_ms = 2000
+rc_loss_action = "hold"
+gps_loss_timeout_ms = 10000
+gps_loss_action = "hold"

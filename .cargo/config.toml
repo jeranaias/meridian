@@ -1,0 +1,16 @@
+# Cargo configuration for STM32H743 cross-compilation
+#
+# This applies only when building for the ARM target.
+# Host-target builds (cargo check, cargo test) are unaffected.
+
+[target.thumbv7em-none-eabihf]
+# Use the LLD linker bundled with Rust (faster, no external toolchain needed)
+rustflags = [
+    "-C", "link-arg=-Tlink.x",
+    "-C", "link-arg=-Tdefmt.x",
+]
+runner = "probe-rs run --chip STM32H743VIHx"
+
+[build]
+# Do NOT set a default target here — the workspace has Linux/SITL crates too.
+# Build for ARM explicitly: cargo build --target thumbv7em-none-eabihf -p meridian-stm32-bin

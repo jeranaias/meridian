@@ -1,0 +1,362 @@
+# AEROFOX_H7 — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32H743, 24MHz crystal, 400MHz clock
+
+[board]
+name = "AEROFOX_H7"
+board_id = 0
+mcu = "STM32H743"
+clock_hz = 400000000
+oscillator_hz = 24000000
+flash_size_kb = 2048
+ram_size_kb = 1024
+
+[serial]
+order = ["OTG1", "UART7", "UART4", "UART5", "USART2", "USART1", "UART8", "USART3", "OTG2"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 2
+
+[[spi_bus]]
+index = 1
+sck = "B3"
+miso = "B4"
+mosi = "B5"
+af = 5
+dma_noshare = false
+
+[[spi_bus]]
+index = 2
+sck = "D3"
+miso = "C2"
+mosi = "C3"
+af = 5
+dma_noshare = true
+
+[[spi_bus]]
+index = 4
+sck = "E2"
+miso = "E5"
+mosi = "E6"
+af = 5
+dma_noshare = false
+
+[[spi_device]]
+name = "16470"
+bus = 1
+cs = "D7"
+mode = 3
+low_speed_hz = 1000000
+high_speed_hz = 2000000
+
+[[spi_device]]
+name = "42688_1"
+bus = 1
+cs = "D4"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 16000000
+
+[[spi_device]]
+name = "42688_2"
+bus = 4
+cs = "C15"
+mode = 3
+low_speed_hz = 2000000
+high_speed_hz = 16000000
+
+[[spi_device]]
+name = "ramtron"
+bus = 2
+cs = "D10"
+mode = 3
+low_speed_hz = 8000000
+high_speed_hz = 8000000
+
+[[spi_device]]
+name = "sdcard"
+bus = 2
+cs = "C14"
+mode = 0
+low_speed_hz = 1000000
+high_speed_hz = 8000000
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B6"
+sda = "B7"
+af = 4
+speed_khz = 400
+internal = true
+
+[[i2c_bus]]
+index = 2
+logical_index = 1
+scl = "B10"
+sda = "B11"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "OTG1"
+is_usb = true
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "UART7"
+uart_index = 7
+tx = "A15"
+rx = "A8"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "UART4"
+uart_index = 4
+tx = "C10"
+rx = "C11"
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "UART5"
+uart_index = 5
+tx = "C12"
+rx = "D2"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 4
+peripheral = "USART2"
+uart_index = 2
+tx = "D5"
+rx = "D6"
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 5
+peripheral = "USART1"
+uart_index = 1
+tx = "A9"
+rx = "A10"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 6
+peripheral = "UART8"
+uart_index = 8
+tx = "E1"
+rx = "E0"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 7
+peripheral = "USART3"
+uart_index = 3
+tx = "D8"
+rx = "D9"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[uart]]
+serial_index = 8
+peripheral = "OTG2"
+is_usb = true
+default_baud = 115200
+default_protocol = 0  # None
+
+[[pwm_output]]
+pwm_num = 1
+timer = 2
+channel = 1
+pin = "A0"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 2
+channel = 2
+pin = "A1"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 1
+channel = 1
+pin = "E9"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 1
+channel = 2
+pin = "E11"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 5
+timer = 4
+channel = 1
+pin = "D12"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 6
+timer = 4
+channel = 2
+pin = "D13"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 7
+timer = 3
+channel = 1
+pin = "C6"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 8
+timer = 3
+channel = 2
+pin = "C7"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 9
+timer = 15
+channel = 1
+pin = "A2"
+af = 4
+complementary = false
+
+[[pwm_output]]
+pwm_num = 10
+timer = 15
+channel = 2
+pin = "A3"
+af = 4
+complementary = false
+
+[[pwm_output]]
+pwm_num = 11
+timer = 14
+channel = 1
+pin = "A7"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 12
+timer = 13
+channel = 1
+pin = "A6"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 13
+timer = 8
+channel = 4
+pin = "C9"
+af = 3
+complementary = false
+
+[[pwm_output]]
+pwm_num = 14
+timer = 8
+channel = 3
+pin = "C8"
+af = 3
+complementary = false
+
+[[pwm_output]]
+pwm_num = 15
+timer = 12
+channel = 2
+pin = "B15"
+af = 9
+complementary = false
+
+[[pwm_output]]
+pwm_num = 16
+timer = 12
+channel = 1
+pin = "B14"
+af = 9
+complementary = false
+
+[[imu_probe]]
+driver = "Adis1647x"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "16470"
+rotation = "Pitch180"
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 1
+spi_device = "42688_1"
+rotation = "None"
+
+[[imu_probe]]
+driver = "Invensensev3"
+bus_type = "Spi"
+bus_index = 4
+spi_device = "42688_2"
+rotation = "Pitch180Yaw270"
+
+[[baro_probe]]
+driver = "Spl06"
+bus_type = "I2c"
+bus_index = 0
+address = 0x76
+
+[[baro_probe]]
+driver = "Bmp280"
+bus_type = "I2c"
+bus_index = 0
+address = 0x76
+
+[[compass_probe]]
+driver = "Qmc5883l"
+bus_type = "I2c"
+bus_index = 0
+address = 0x0D
+rotation = "None"
+external = false
+
+[adc]
+voltage_pin = 19
+current_pin = 9
+voltage_scale = 21
+current_scale = 40
+
+[misc]
+led_pin = "D14"
+buzzer_pin = "B9"
+safety_pin = "D15"
+

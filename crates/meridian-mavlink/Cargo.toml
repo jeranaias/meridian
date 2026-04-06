@@ -1,0 +1,18 @@
+[package]
+name = "meridian-mavlink"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MAVLink v2 bridge for QGroundControl / Mission Planner compatibility"
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+meridian-bus = { workspace = true }
+meridian-comms = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-bus/std", "meridian-comms/std"]

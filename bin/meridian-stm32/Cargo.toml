@@ -1,0 +1,22 @@
+[package]
+name = "meridian-stm32-bin"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "STM32H7 flight controller binary — Phase 9 MVP firmware"
+
+[dependencies]
+meridian-types = { workspace = true }
+meridian-hal = { workspace = true }
+meridian-comms = { workspace = true }
+meridian-platform-stm32 = { workspace = true }
+meridian-boardcfg = { workspace = true }
+
+# Hardware deps — only for ARM target
+[target.'cfg(target_arch = "arm")'.dependencies]
+cortex-m = { version = "0.7", features = ["critical-section-single-core"] }
+cortex-m-rt = "0.7"
+stm32h7xx-hal = { version = "0.16", features = ["stm32h743v", "rt"] }
+defmt = "0.3"
+defmt-rtt = "0.4"
+panic-probe = { version = "0.3", features = ["print-defmt"] }

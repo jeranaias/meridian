@@ -1,0 +1,16 @@
+[package]
+name = "meridian-platform-linux"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Platform implementation for Linux companions via Tokio"
+
+[dependencies]
+meridian-types = { workspace = true, features = ["std"] }
+meridian-hal = { workspace = true, features = ["std"] }
+
+# Linux deps will be added when we implement Phase 9
+# tokio = { version = "1", features = ["full"] }
+
+[features]
+default = []

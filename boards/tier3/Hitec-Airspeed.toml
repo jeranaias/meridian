@@ -1,0 +1,38 @@
+# HITEC_AIRSPEED — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32G441xx, 24MHz crystal, 400MHz clock
+
+[board]
+name = "HITEC_AIRSPEED"
+board_id = 0
+mcu = "STM32G441xx"
+clock_hz = 400000000
+oscillator_hz = 24000000
+flash_size_kb = 128
+ram_size_kb = 0
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 1
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "A15"
+sda = "B9"
+af = 4
+speed_khz = 400
+internal = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+
+[misc]
+led_pin = "A10"
+

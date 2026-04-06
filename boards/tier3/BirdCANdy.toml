@@ -1,0 +1,114 @@
+# BirdCANdy — Meridian board configuration
+# Auto-generated from ArduPilot hwdef.dat by hwdef-to-toml.py
+# MCU: STM32F412Rx, 16MHz crystal, 400MHz clock
+
+[board]
+name = "BirdCANdy"
+board_id = 0
+mcu = "STM32F412Rx"
+clock_hz = 400000000
+oscillator_hz = 16000000
+flash_size_kb = 512
+ram_size_kb = 0
+
+[serial]
+order = ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "EMPTY", "USART6"]
+
+[features]
+sdcard = false
+iomcu = false
+ethernet = false
+can = true
+can_bus_count = 1
+
+[[i2c_bus]]
+index = 1
+logical_index = 0
+scl = "B6"
+sda = "B7"
+af = 4
+speed_khz = 400
+internal = false
+
+[[uart]]
+serial_index = 0
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 115200
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 1
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 2
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 57600
+default_protocol = 2  # MAVLink2
+
+[[uart]]
+serial_index = 3
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 4
+peripheral = "EMPTY"
+uart_index = 0
+default_baud = 115200
+default_protocol = 5  # GPS
+
+[[uart]]
+serial_index = 5
+peripheral = "USART6"
+uart_index = 6
+tx = "A11"
+rx = "A12"
+default_baud = 115200
+default_protocol = 0  # None
+
+[[pwm_output]]
+pwm_num = 1
+timer = 2
+channel = 1
+pin = "A15"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 2
+timer = 2
+channel = 2
+pin = "B3"
+af = 1
+complementary = false
+
+[[pwm_output]]
+pwm_num = 3
+timer = 3
+channel = 1
+pin = "B4"
+af = 2
+complementary = false
+
+[[pwm_output]]
+pwm_num = 4
+timer = 3
+channel = 2
+pin = "B5"
+af = 2
+complementary = false
+
+[adc]
+voltage_pin = 0
+current_pin = 0
+voltage_scale = 11.0
+current_scale = 17.0
+

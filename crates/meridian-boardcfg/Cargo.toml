@@ -1,0 +1,8 @@
+[package]
+name = "meridian-boardcfg"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Board configuration system — TOML board definitions to Rust code"
+
+[dependencies]

@@ -1,0 +1,19 @@
+[package]
+name = "meridian-modes"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Flight mode state machines — Stabilize, AltHold, Loiter, RTL, Auto, etc."
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+meridian-bus = { workspace = true }
+meridian-control = { workspace = true }
+meridian-nav = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std", "meridian-bus/std", "meridian-control/std", "meridian-nav/std"]

@@ -1,0 +1,16 @@
+[package]
+name = "meridian-mixing"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "Motor/actuator mixing matrices and vehicle geometry"
+
+[dependencies]
+meridian-math = { workspace = true }
+meridian-types = { workspace = true }
+heapless = { workspace = true }
+libm = { workspace = true }
+
+[features]
+default = []
+std = ["meridian-types/std"]
