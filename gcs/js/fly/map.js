@@ -87,8 +87,13 @@ window.FlyMap = (function () {
             smoothFactor: 1,
         }).addTo(map);
 
-        // Trajectory line disabled — too cluttered on the map
-        trajectoryLine = null;
+        // Short velocity vector (2 second projection)
+        trajectoryLine = L.polyline([], {
+            color: '#0891b2',
+            weight: 2,
+            opacity: 0.4,
+            smoothFactor: 1,
+        }).addTo(map);
 
         // Home guide line and fly mission line are opt-in, not created by default
         homeGuideLine = null;
@@ -113,6 +118,15 @@ window.FlyMap = (function () {
             opacity: 0.8,
             smoothFactor: 1,
         }).addTo(map);
+
+        // Vehicle switch: recenter map and reset trail
+        meridian.events.on('vehicle_switch', function () {
+            var v = meridian.v;
+            if (v && v.lat && v.lon) {
+                map.setView([v.lat, v.lon], map.getZoom(), { animate: true });
+                trailLine.setLatLngs(v.trail || []);
+            }
+        });
 
         // Drag-to-fly: drag vehicle icon to set guided target (Victor: direct manipulation)
         let dragTarget = null;
@@ -246,7 +260,7 @@ window.FlyMap = (function () {
             const vyMs = v.vy * 100;
             const speed = Math.sqrt(vxMs * vxMs + vyMs * vyMs);
             if (speed > 0.3) {
-                for (let t = 1; t <= 5; t++) {
+                for (let t = 1; t <= 2; t++) {
                     const dlat = (vxMs * t) / 111320;
                     const dlon = (vyMs * t) / (111320 * Math.cos(v.lat * Math.PI / 180));
                     points.push([v.lat + dlat, v.lon + dlon]);
@@ -254,7 +268,7 @@ window.FlyMap = (function () {
             } else {
                 // Fallback to heading if vx/vy unavailable
                 const hdgRad = v.heading * Math.PI / 180;
-                for (let t = 1; t <= 5; t++) {
+                for (let t = 1; t <= 2; t++) {
                     const dist = v.groundspeed * t;
                     const dlat = (dist * Math.cos(hdgRad)) / 111320;
                     const dlon = (dist * Math.sin(hdgRad)) / (111320 * Math.cos(v.lat * Math.PI / 180));

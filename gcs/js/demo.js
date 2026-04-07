@@ -47,6 +47,31 @@ window.Demo = (function () {
         v.rcRssi = 230;
         v.rcChannels = [1500, 1500, 1500, 1500, 1000, 1500, 1500, 1500];
 
+        // Second vehicle (sysid 2) — AUTO mode, offset orbit
+        meridian.vehicles[2] = meridian.createVehicleState(2);
+        var v2 = meridian.vehicles[2];
+        v2.connected = true;
+        v2.armed = true;
+        v2.lastHeartbeat = Date.now();
+        v2.modeNum = 3;
+        v2.modeName = 'AUTO';
+        v2.homeLat = BASE_LAT + 0.003;
+        v2.homeLon = BASE_LON + 0.003;
+        v2.homeAlt = 350;
+        v2.flightStartTime = Date.now() - 90000;
+        v2.satellites = 12;
+        v2.fixType = 3;
+        v2.hdop = 1.1;
+        v2.vdop = 1.5;
+        v2.voltage = 11.8;
+        v2.current = 20.5;
+        v2.batteryPct = 58;
+        v2.ekfVelVar = 0.10;
+        v2.ekfPosVar = 0.15;
+        v2.ekfHgtVar = 0.07;
+        v2.ekfFlags = 0x1FF;
+        v2.rcRssi = 200;
+
         // Demo params for Setup/Params views
         v.params = {
             FRAME_CLASS: 1, FRAME_TYPE: 1,
@@ -179,7 +204,33 @@ window.Demo = (function () {
         meridian.events.emit('gps', v);
         meridian.events.emit('telemetry', v);
 
-        // Single vehicle demo only — multi-vehicle removed to avoid confusion
+        // Vehicle 2 update
+        var v2 = meridian.vehicles[2];
+        if (v2) {
+            var angle2 = -t * 0.08;
+            var lat2 = (BASE_LAT + 0.003) + 0.0008 * Math.cos(angle2);
+            var lon2 = (BASE_LON + 0.003) + 0.0008 * Math.sin(angle2) / Math.cos(BASE_LAT * Math.PI / 180);
+            var alt2 = 35 + 3 * Math.sin(t * 0.2);
+            var hdg2 = ((Math.atan2(Math.cos(angle2), Math.sin(angle2)) * 180 / Math.PI) + 360) % 360;
+
+            v2.lat = lat2;
+            v2.lon = lon2;
+            v2.alt = 350 + alt2;
+            v2.relativeAlt = alt2;
+            v2.heading = hdg2;
+            v2.hdg = hdg2;
+            v2.roll = 0.05 * Math.sin(t * 0.5);
+            v2.pitch = -0.03;
+            v2.yaw = hdg2 * Math.PI / 180;
+            v2.groundspeed = 2.5;
+            v2.airspeed = 2.8;
+            v2.throttle = 48;
+            v2.batteryPct = Math.max(0, 58 - t * 0.012);
+            v2.voltage = 11.8 - t * 0.0006;
+            v2.lastHeartbeat = Date.now();
+            v2.trail.push([lat2, lon2]);
+            if (v2.trail.length > 300) v2.trail.shift();
+        }
     }
 
     function stop() {
