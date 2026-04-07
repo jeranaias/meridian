@@ -14,3 +14,6 @@ postcard = { workspace = true }
 [features]
 default = []
 std = ["meridian-types/std", "meridian-bus/std", "postcard/use-std"]
+
+[lints]
+workspace = true

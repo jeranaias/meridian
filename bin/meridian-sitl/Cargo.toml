@@ -27,3 +27,6 @@ meridian-params = { workspace = true, features = ["std"] }
 meridian-rc = { workspace = true, features = ["std"] }
 meridian-sitl = { workspace = true }
 meridian-platform-sitl = { workspace = true }
+
+[lints]
+workspace = true

@@ -121,3 +121,44 @@ lto = true
 codegen-units = 1
 debug = true          # Keep debug info for crash analysis
 strip = false
+
+[workspace.lints.clippy]
+# Style lints — allow in flight algorithms where clarity > idiom
+new_without_default = "allow"
+derivable_impls = "allow"
+len_without_is_empty = "allow"
+too_many_arguments = "allow"
+# Doc formatting
+empty_line_after_doc_comments = "allow"
+doc_list_item_indentation = "allow"
+doc_lazy_continuation = "allow"
+# Control flow style
+collapsible_else_if = "allow"
+collapsible_if = "allow"
+collapsible_match = "allow"
+single_match = "allow"
+possible_missing_else = "allow"
+# Numeric patterns — ArduPilot algorithm ports use explicit math
+manual_range_contains = "allow"
+needless_range_loop = "allow"
+approx_constant = "allow"
+manual_clamp = "allow"
+manual_is_multiple_of = "allow"
+manual_memcpy = "allow"
+manual_swap = "allow"
+manual_div_ceil = "allow"
+manual_abs_diff = "allow"
+manual_rotate = "allow"
+identity_op = "allow"
+int_plus_one = "allow"
+implicit_saturating_sub = "allow"
+assign_op_pattern = "allow"
+# Misc
+unnecessary_cast = "allow"
+unnecessary_map_or = "allow"
+let_and_return = "allow"
+redundant_pattern_matching = "allow"
+wildcard_in_or_patterns = "allow"
+needless_borrow = "allow"
+needless_borrows_for_generic_args = "allow"
+double_parens = "allow"

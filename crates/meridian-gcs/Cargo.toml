@@ -17,3 +17,6 @@ meridian-comms = { workspace = true, features = ["std"] }
 
 [features]
 default = []
+
+[lints]
+workspace = true

@@ -7,3 +7,6 @@ license.workspace = true
 [dependencies]
 meridian-types = { workspace = true }
 heapless = { workspace = true }
+
+[lints]
+workspace = true

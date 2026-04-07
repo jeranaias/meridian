@@ -9,3 +9,6 @@ description = "Linux companion binary"
 meridian-types = { workspace = true, features = ["std"] }
 meridian-hal = { workspace = true, features = ["std"] }
 meridian-platform-linux = { workspace = true }
+
+[lints]
+workspace = true

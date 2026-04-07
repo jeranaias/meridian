@@ -16,3 +16,6 @@ libm = { workspace = true }
 [features]
 default = []
 std = ["meridian-types/std", "meridian-bus/std", "meridian-mixing/std"]
+
+[lints]
+workspace = true

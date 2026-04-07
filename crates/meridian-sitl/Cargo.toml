@@ -23,3 +23,6 @@ meridian-mission = { workspace = true, features = ["std"] }
 meridian-comms = { workspace = true, features = ["std"] }
 heapless = { workspace = true }
 libm = { workspace = true }
+
+[lints]
+workspace = true

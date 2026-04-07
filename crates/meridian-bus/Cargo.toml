@@ -16,3 +16,6 @@ optional = true
 [features]
 default = []
 std = ["crossbeam-channel", "meridian-types/std"]
+
+[lints]
+workspace = true

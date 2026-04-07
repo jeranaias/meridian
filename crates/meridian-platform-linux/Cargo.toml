@@ -14,3 +14,6 @@ meridian-hal = { workspace = true, features = ["std"] }
 
 [features]
 default = []
+
+[lints]
+workspace = true

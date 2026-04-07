@@ -10,3 +10,6 @@ meridian-types = { workspace = true }
 meridian-math = { workspace = true }
 meridian-sync = { workspace = true }
 heapless = { workspace = true }
+
+[lints]
+workspace = true

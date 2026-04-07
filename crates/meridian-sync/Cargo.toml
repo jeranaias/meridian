@@ -19,3 +19,6 @@ std = []
 [[test]]
 name = "recursive_mutex"
 path = "tests/recursive_mutex.rs"
+
+[lints]
+workspace = true

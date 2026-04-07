@@ -13,3 +13,6 @@ heapless = { workspace = true }
 [features]
 default = []
 std = ["meridian-types/std", "meridian-bus/std"]
+
+[lints]
+workspace = true

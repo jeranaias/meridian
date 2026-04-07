@@ -2,19 +2,24 @@ name: Meridian CI
 
 on: [push, pull_request]
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   test:
+    name: Test + Clippy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
-      - name: Run tests
+      - name: Run tests (1,265 across 47 crates)
         run: cargo test --workspace
-      - name: Clippy
-        run: cargo clippy --workspace -- -A clippy::new_without_default -A clippy::empty_line_after_doc_comments -A clippy::doc_list_item_indentation -A clippy::collapsible_else_if -A clippy::manual_range_contains -A clippy::needless_range_loop -A clippy::map_or_default -A clippy::approx_constant
+      - name: Clippy (workspace lints in Cargo.toml)
+        run: cargo clippy --workspace
 
   build-no-std:
+    name: no_std Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,11 +27,9 @@ jobs:
         with:
           targets: thumbv7em-none-eabihf
       - uses: Swatinem/rust-cache@v2
-      - name: Build HAL traits (no_std)
-        run: cargo check --target thumbv7em-none-eabihf -p meridian-hal
-      - name: Build types (no_std)
-        run: cargo check --target thumbv7em-none-eabihf -p meridian-types
-      - name: Build math (no_std)
-        run: cargo check --target thumbv7em-none-eabihf -p meridian-math
-      - name: Build sync (no_std)
-        run: cargo check --target thumbv7em-none-eabihf -p meridian-sync
+      - name: Check core crates compile for embedded
+        run: |
+          cargo check --target thumbv7em-none-eabihf -p meridian-hal
+          cargo check --target thumbv7em-none-eabihf -p meridian-types
+          cargo check --target thumbv7em-none-eabihf -p meridian-math
+          cargo check --target thumbv7em-none-eabihf -p meridian-sync

@@ -20,3 +20,6 @@ stm32h7xx-hal = { version = "0.16", features = ["stm32h743v", "rt"] }
 defmt = "0.3"
 defmt-rtt = "0.4"
 panic-probe = { version = "0.3", features = ["print-defmt"] }
+
+[lints]
+workspace = true

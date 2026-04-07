@@ -17,3 +17,6 @@ optional = true
 [features]
 default = []
 std = ["toml", "meridian-types/std", "serde/std"]
+
+[lints]
+workspace = true

@@ -8,3 +8,6 @@ license.workspace = true
 meridian-math = { workspace = true }
 meridian-types = { workspace = true }
 libm = { workspace = true }
+
+[lints]
+workspace = true

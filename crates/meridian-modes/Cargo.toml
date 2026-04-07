@@ -17,3 +17,6 @@ libm = { workspace = true }
 [features]
 default = []
 std = ["meridian-types/std", "meridian-bus/std", "meridian-control/std", "meridian-nav/std"]
+
+[lints]
+workspace = true
